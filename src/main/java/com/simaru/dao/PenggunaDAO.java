@@ -11,8 +11,6 @@ import com.simaru.model.Dosen;
 import com.simaru.model.Mahasiswa;
 import com.simaru.model.Pengguna;
 import com.simaru.util.Hash;
-import com.simaru.util.Navigator;
-import com.simaru.util.Session;
 
 
 public class PenggunaDAO implements CrudOperation<Pengguna> {
@@ -70,16 +68,6 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             }
         } catch (Exception e) {
             // System.err.println("Error during registration: " + e.getMessage());
-            return false;
-        }
-    }
-    public static boolean logout() {
-        try {
-            Session.clear();
-            Navigator.show("Login", "SIMARU - Login", 400, 300);
-            return true;
-        } catch (Exception e) {
-            System.err.println("Error during logout: " + e.getMessage());
             return false;
         }
     }

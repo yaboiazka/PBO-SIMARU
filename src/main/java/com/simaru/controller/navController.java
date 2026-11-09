@@ -67,7 +67,12 @@ public class navController implements Initializable {
 
     @FXML
     void doLogOut(ActionEvent event) {
-
+        Pengguna currentUser = Session.getCurrent();
+        if (currentUser != null) {
+            currentUser.logout();
+        } else {
+            System.out.println("Tidak ada pengguna yang sedang login.");
+        }
     }
 
 }

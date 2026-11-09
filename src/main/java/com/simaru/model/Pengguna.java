@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 
 import com.simaru.dao.Database;
 import com.simaru.util.Hash;
+import com.simaru.util.Navigator;
+import com.simaru.util.Session;
 
 public abstract class Pengguna {
     private int id_pengguna;
@@ -69,9 +71,17 @@ public abstract class Pengguna {
             return false;
         }
     }
-    public void logout(){
-        
+    public boolean logout(){
+        try {
+            Session.clear();
+            Navigator.show("Login", "SIMARU - Login", 420, 460);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error during logout: " + e.getMessage());
+            return false;
+        }
     }
+        
     public abstract String getHakAkses();
     
 }
