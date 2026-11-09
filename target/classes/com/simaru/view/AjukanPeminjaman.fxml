@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="12" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.simaru.controller.AjukanPeminjamanController">
+    <padding>
+        <Insets bottom="16" left="16" right="16" top="16"/>
+    </padding>
+
+    <Label styleClass="judul" text="Ajukan Peminjaman Ruangan"/>
+    <Label styleClass="sub-judul" text="Hanya ruangan berstatus Tersedia yang bisa dipilih. Pengajuan akan berstatus Pending sampai diverifikasi admin."
+           wrapText="true"/>
+
+    <VBox maxWidth="480" spacing="10">
+        <VBox spacing="4">
+            <Label text="Ruangan"/>
+            <ComboBox fx:id="cbRuangan" maxWidth="Infinity" promptText="Pilih ruangan"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Tanggal"/>
+            <DatePicker fx:id="dpTanggal" maxWidth="Infinity"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Jam mulai (HH:mm)"/>
+            <TextField fx:id="tfJamMulai" promptText="08:00"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Jam selesai (HH:mm)"/>
+            <TextField fx:id="tfJamSelesai" promptText="10:00"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Keperluan"/>
+            <TextArea fx:id="taKeperluan" prefRowCount="3" wrapText="true"/>
+        </VBox>
+        <Button onAction="#onAjukan" styleClass="tombol-utama" text="Ajukan Peminjaman"/>
+    </VBox>
+</VBox>

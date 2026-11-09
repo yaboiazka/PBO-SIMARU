@@ -3,38 +3,54 @@ package com.simaru.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.simaru.model.Pengguna;
-import com.simaru.util.Hash;
-import com.simaru.dao.Database;
 import com.simaru.model.Admin;
 import com.simaru.model.Dosen;
 import com.simaru.model.Mahasiswa;
+import com.simaru.model.Pengguna;
+import com.simaru.util.Hash;
+import com.simaru.util.Navigator;
+import com.simaru.util.Session;
 
 
 public class PenggunaDAO implements CrudOperation<Pengguna> {
 
-    public static boolean login(String email, String password) {
+    public static Pengguna login(String email, String password) {
         Connection conn = Database.getConnection();
-        String query = "SELECT * FROM pengguna WHERE email = ? AND password = ?";
-        try {
-            password = Hash.hashSHA256(password);
+        String query = "SELECT p.*, ps.fakultas, ps.program_studi " + "FROM pengguna p " + "LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi " + "WHERE p.email = ? AND p.password = ?";
+            try {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, email);
-            pstmt.setString(2, password);
-            if (pstmt.executeQuery().next()) {
-                // System.out.println("Login berhasil!");
-                return true;
-            } else {
-                // System.out.println("Email atau password salah.");
-                return false;
+            pstmt.setString(2, Hash.hashSHA256(password));
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int id_pengguna = rs.getInt("id_pengguna");
+                String nama = rs.getString("nama");
+                String db_email = rs.getString("email");
+                String db_password = rs.getString("password");
+                String role = rs.getString("role");
+                if ("ADMIN".equals(role)) {
+                    Admin admin = new Admin(id_pengguna, nama, db_email, db_password, role);
+                    return admin;
+                } else if ("DOSEN".equals(role)) {
+                    String nip = rs.getString("nim_nip");
+                    String fakultas = rs.getString("fakultas");
+                    Dosen dosen = new Dosen(id_pengguna, nama, db_email, db_password, nip, fakultas);
+                    return dosen;
+                } else {
+                    String nim = rs.getString("nim_nip");
+                    String prodi = rs.getString("program_studi");
+                    Mahasiswa mahasiswa = new Mahasiswa(id_pengguna, nama, db_email, db_password, nim, prodi);
+                    return mahasiswa;
+                }
             }
         } catch (Exception e) {
-            // System.err.println("Error during login: " + e.getMessage());
-            return false;
+            System.err.println("Error during checking user: " + e.getMessage());
+            return null;
         }
+        return null;
     }
     public static boolean register(Pengguna pengguna) {
         Connection conn = Database.getConnection();
@@ -58,8 +74,14 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
         }
     }
     public static boolean logout() {
-        // Implement logout logic if needed
-        return true;
+        try {
+            Session.clear();
+            Navigator.show("Login", "SIMARU - Login", 400, 300);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error during logout: " + e.getMessage());
+            return false;
+        }
     }
 
     public void tambah(Pengguna pengguna) {
@@ -114,10 +136,10 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 String role = rs.getString("role");
-                if (role == "ADMIN") {
+                if ("ADMIN".equals(role)) {
                     Admin admin = new Admin(id_pengguna, nama, email, password, role);
                     penggunaList.add(admin);
-                } else if (role == "DOSEN") {
+                } else if ("DOSEN".equals(role)) {
                     String nip = rs.getString("nim_nip");
                     String fakultas = rs.getString("fakultas");
                     Dosen dosen = new Dosen(id_pengguna, nama, email, password, nip, fakultas);
@@ -149,7 +171,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             return false;
         }
     }
-    public static String getHakAkses(String email) {
+    public static String getRole(String email) {
         Connection conn = Database.getConnection();
         String query = "SELECT role FROM pengguna WHERE email = ?";
         try {
