@@ -6,6 +6,7 @@ import java.io.UncheckedIOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Navigator {
@@ -34,6 +35,14 @@ public class Navigator {
             stage.show();
         } catch (IOException e) {
             throw new UncheckedIOException("Gagal memuat " + name + ".fxml", e);
+        }
+    }
+    
+    public static void loadInto(BorderPane pane, String name) {
+        try {
+            pane.setCenter(loader(name).load());
+        } catch (IOException e) {
+            Alerts.error("Gagal memuat halaman " + name + ": " + e.getMessage());
         }
     }
 }

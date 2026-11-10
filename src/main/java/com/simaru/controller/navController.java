@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.simaru.model.Pengguna;
+import com.simaru.util.Navigator;
 import com.simaru.util.Session;
 
 import javafx.event.ActionEvent;
@@ -52,12 +53,15 @@ public class navController implements Initializable {
 
     @FXML
     void SwitchToPeminjaman(ActionEvent event) {
-
     }
-
+    
     @FXML
     void SwitchToRuangan(ActionEvent event) {
-
+        Navigator.show("LihatJadwal", "SIMARU - Lihat Jadwal", 800, 600);
+    }
+    @FXML
+    void SwitchToListRuangan(ActionEvent event) {
+        Navigator.show("LihatRuangan", "SIMARU - Lihat Ruangan", 800, 600);
     }
 
     @FXML

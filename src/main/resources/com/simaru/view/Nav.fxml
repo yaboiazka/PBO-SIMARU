@@ -21,7 +21,7 @@
          </font>
       </Text>
       <Text fx:id="roleText" layoutX="691.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="role" textAlignment="RIGHT" />
-      <Button fx:id="listRuanganButton" layoutX="437.0" layoutY="13.0" mnemonicParsing="false" onAction="#SwitchToRuangan" text="List Ruangan" textAlignment="CENTER" />
+      <Button fx:id="listRuanganButton" layoutX="437.0" layoutY="13.0" mnemonicParsing="false" onAction="#SwitchToListRuangan" text="List Ruangan" textAlignment="CENTER" />
       <Button fx:id="logOutButton" layoutX="724.0" layoutY="14.0" mnemonicParsing="false" onAction="#doLogOut" text="Log Out" textAlignment="CENTER" />
    </children>
 </Pane>
