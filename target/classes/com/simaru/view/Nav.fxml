@@ -12,7 +12,7 @@
       <Button fx:id="statusPeminjamanButton" layoutX="313.0" layoutY="13.0" mnemonicParsing="false" onAction="#SwitchToStatusPeminjaman" text="Status Peminjaman" textAlignment="CENTER" />
       <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIMARU">
          <font>
-            <Font size="24.0" />
+            <Font name="System Bold Italic" size="24.0" />
          </font>
       </Text>
       <Text fx:id="nameText" layoutX="645.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama user" textAlignment="RIGHT">

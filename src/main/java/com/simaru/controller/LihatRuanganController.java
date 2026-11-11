@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import com.simaru.dao.RuanganDAO;
 import com.simaru.model.Ruangan;
+import com.simaru.util.Alerts;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,32 +42,33 @@ public class LihatRuanganController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. Hubungkan kolom FXML dengan getter di class Ruangan
         colNama.setCellValueFactory(new PropertyValueFactory<>("namaRuangan"));
         colLokasi.setCellValueFactory(new PropertyValueFactory<>("lokasi"));
         colKapasitas.setCellValueFactory(new PropertyValueFactory<>("kapasitas"));
         colFasilitas.setCellValueFactory(new PropertyValueFactory<>("fasilitas"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // 2. Load data dari database ke TableView
+        cbFilter.setItems(FXCollections.observableArrayList("Semua", "Tersedia", "Dipakai", "Perbaikan"));
+        cbFilter.setValue("Semua");
         loadData();
     }
 
     private void loadData() {
-        RuanganDAO dao = new RuanganDAO();
-        List<Ruangan> dataList = dao.tampilkan();
-        
-        if (dataList != null) {
+        try {
+            RuanganDAO dao = new RuanganDAO();
+            List<Ruangan> dataList = dao.filter(cbFilter.getValue());
             System.out.println("Jumlah data dari database: " + dataList.size());
             ObservableList<Ruangan> listData = FXCollections.observableArrayList(dataList);
             tvRuangan.setItems(listData);
-        } else {
-            System.out.println("Data dari database NULL (Gagal ambil data atau koneksi error)!");
+            
+        } catch (Exception e) {
+            Alerts.error("Gagal memuat data ruangan: " + e.getMessage());
         }
     }
 
     @FXML
     private void onFilter() {
-        // Logika filter status jika diperlukan
+        System.out.println();
+        loadData();
     }
 }

@@ -10,6 +10,7 @@ import com.simaru.model.Admin;
 import com.simaru.model.Dosen;
 import com.simaru.model.Mahasiswa;
 import com.simaru.model.Pengguna;
+import com.simaru.util.Alerts;
 import com.simaru.util.Hash;
 
 
@@ -45,6 +46,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 }
             }
         } catch (Exception e) {
+            Alerts.error("Error during checking user: " + e.getMessage());
             System.err.println("Error during checking user: " + e.getMessage());
             return null;
         }
@@ -67,6 +69,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 return false;
             }
         } catch (Exception e) {
+            Alerts.error("Error during registration: " + e.getMessage());
             // System.err.println("Error during registration: " + e.getMessage());
             return false;
         }
@@ -82,6 +85,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             pstmt.setString(3, Hash.hashSHA256(pengguna.getPassword()));
             pstmt.executeUpdate();
         } catch (Exception e) {
+            Alerts.error("Error during adding user: " + e.getMessage());
             System.err.println("Error during adding user: " + e.getMessage());
         }
 
@@ -97,6 +101,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             pstmt.setInt(4, pengguna.getIdPengguna());
             pstmt.executeUpdate();
         } catch (Exception e) {
+            Alerts.error("Error during updating user: " + e.getMessage());
             System.err.println("Error during updating user: " + e.getMessage());
         }
     }
@@ -108,6 +113,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             pstmt.setInt(1, id_pengguna);
             pstmt.executeUpdate();
         } catch (Exception e) {
+            Alerts.error("Error during deleting user: " + e.getMessage());
             System.err.println("Error during deleting user: " + e.getMessage());
         }
     }
@@ -140,7 +146,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error during fetching users: " + e.getMessage());
+            Alerts.error("Error during fetching users: " + e.getMessage());
         }
         return penggunaList;
     }
@@ -155,6 +161,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             ResultSet rs = pstmt.executeQuery();
             return rs.next();
         } catch (Exception e) {
+            Alerts.error("Error during adding user: " + e.getMessage());
             System.err.println("Error during checking user: " + e.getMessage());
             return false;
         }
@@ -172,6 +179,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 return null;
             }
         } catch (Exception e) {
+            Alerts.error("Error during fetching user role: " + e.getMessage());
             System.err.println("Error during fetching user role: " + e.getMessage());
             return null;
         }

@@ -3,13 +3,38 @@ package com.simaru.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.simaru.model.Ruangan;
+import com.simaru.util.Alerts;
 
 public class RuanganDAO implements CrudOperation<Ruangan> {
     // Implement CRUD operations for Ruangan here
+    private List<Ruangan> query(String sql, String param) throws SQLException {
+        Connection conn = Database.getConnection();
+        List<Ruangan> hasil = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (param != null) {
+                ps.setString(1, param);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id_ruangan");
+                    String nama = rs.getString("nama_ruangan");
+                    int kapasitas = rs.getInt("kapasitas");
+                    String lokasi = rs.getString("lokasi");
+                    String fasilitas = rs.getString("fasilitas");
+                    String status = rs.getString("status");
+                    Ruangan ruangan = new Ruangan(id, nama, kapasitas, fasilitas, lokasi);
+                    ruangan.setStatus(status);
+                    hasil.add(ruangan);
+                }
+            }
+        }
+        return hasil;
+    }
     @Override
     public void tambah(Ruangan ruangan) {
         Connection conn = Database.getConnection();
@@ -21,6 +46,7 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
             pstmt.setString(3, ruangan.getFasilitas());
             pstmt.executeUpdate();
         } catch (Exception e) {
+            Alerts.error("Error during adding Ruangan: " + e.getMessage());
             System.err.println("Error during adding Ruangan: " + e.getMessage());
         }
     }
@@ -37,6 +63,7 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
             pstmt.setInt(5, ruangan.getIdRuangan());
             pstmt.executeUpdate();
         } catch (Exception e) {
+            Alerts.error("Error during updating Ruangan: " + e.getMessage());
             System.err.println("Error during updating Ruangan: " + e.getMessage());
         }
         // Implement the logic to update an existing Ruangan in the database
@@ -50,15 +77,16 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
             pstmt.setInt(1, id_ruangan);
             pstmt.executeUpdate();
         } catch (Exception e) {
+            Alerts.error("Error during deleting Ruangan: " + e.getMessage());
             System.err.println("Error during deleting Ruangan: " + e.getMessage());
         }
         // Implement the logic to delete a Ruangan from the database based on its ID
     }
     @Override
     public List<Ruangan> tampilkan() {
+        String query = "SELECT * FROM ruangan";
         Connection conn = Database.getConnection();
         try {
-            String query = "SELECT * FROM ruangan";
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             if (rs != null) {
@@ -77,12 +105,14 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
                 return ruanganList;
             }
         } catch (Exception e) {
+            Alerts.error("Error during displaying Ruangan: " + e.getMessage());
             System.err.println("Error during displaying Ruangan: " + e.getMessage());
         }
         return null;
     }
 
-    public Ruangan cari(int id_ruangan) {Connection conn = Database.getConnection();
+    public Ruangan cari(int id_ruangan) {
+        Connection conn = Database.getConnection();
         try {
             String query = "SELECT * FROM ruangan WHERE id_ruangan = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -100,8 +130,15 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
                 return ruangan;
             }
         } catch (Exception e) {
+            Alerts.error("Error during searching Ruangan: " + e.getMessage());
             System.err.println("Error during displaying Ruangan: " + e.getMessage());
         }
         return null;
+    }
+    public List<Ruangan> filter(String status) throws SQLException {
+        if (status == null || status.isBlank() || status.equalsIgnoreCase("Semua")) {
+            return tampilkan();
+        }
+        return query("SELECT * FROM ruangan WHERE status= ? ORDER BY nama_ruangan", status);
     }
 }
