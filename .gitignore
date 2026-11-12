@@ -1,0 +1,51 @@
+# ===== Maven Build Output =====
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# ===== Java Compiled Files =====
+*.class
+*.jar
+*.war
+*.ear
+
+# ===== IntelliJ IDEA =====
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ===== VS Code =====
+.vscode/
+
+# ===== Eclipse =====
+.settings/
+.classpath
+.project
+bin/
+
+# ===== NetBeans =====
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== Local Config / Secrets =====
+application.properties
+.env
+*.local.properties
+!application.properties.example
