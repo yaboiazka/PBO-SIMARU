@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,19 +55,20 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
     public void ubah(Ruangan ruangan) {
         Connection conn = Database.getConnection();
         try {
-            String query = "UPDATE ruangan SET nama_ruangan = ?, kapasitas = ?, fasilitas = ?, lokasi = ? WHERE id_ruangan = ?";
+            // Tambahkan status = ? ke dalam query UPDATE
+            String query = "UPDATE ruangan SET nama_ruangan = ?, kapasitas = ?, fasilitas = ?, lokasi = ?, status = ? WHERE id_ruangan = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, ruangan.getNamaRuangan());
             pstmt.setInt(2, ruangan.getKapasitas());
             pstmt.setString(3, ruangan.getFasilitas());
             pstmt.setString(4, ruangan.getLokasi());
-            pstmt.setInt(5, ruangan.getIdRuangan());
+            pstmt.setString(5, ruangan.getStatus());
+            pstmt.setInt(6, ruangan.getIdRuangan());
             pstmt.executeUpdate();
         } catch (Exception e) {
             Alerts.error("Error during updating Ruangan: " + e.getMessage());
             System.err.println("Error during updating Ruangan: " + e.getMessage());
         }
-        // Implement the logic to update an existing Ruangan in the database
     }
     @Override
     public void hapus(int id_ruangan) {
@@ -160,5 +162,57 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
             return tampilkan();
         }
         return query("SELECT * FROM ruangan WHERE status= ? ORDER BY nama_ruangan", status);
+    }
+
+    public static void refresh() {
+        Connection conn = Database.getConnection();
+        
+        String sqlDipakai = "SELECT * FROM ruangan " + 
+                    "WHERE id_ruangan IN (" +
+                    "  SELECT id_ruangan FROM peminjaman " +
+                    "  WHERE tanggal_pinjam = CURDATE() " +
+                    "  AND CURTIME() BETWEEN jam_mulai AND jam_selesai " +
+                    "  AND status_verifikasi = 'Disetujui')";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlDipakai)) {
+            
+            RuanganDAO dao = new RuanganDAO();
+            while (rs.next()) {
+                Ruangan r = new Ruangan(
+                    rs.getInt("id_ruangan"),
+                    rs.getString("nama_ruangan"),
+                    rs.getInt("kapasitas"),
+                    rs.getString("fasilitas"),
+                    rs.getString("lokasi")
+                );
+                r.setStatus("Dipakai");
+                dao.ubah(r);
+            }
+        } catch (Exception e) {
+            Alerts.error("Error refresh dipakai: " + e.getMessage());
+        }
+
+        String sqlTersedia = "SELECT * FROM ruangan " + 
+                    "WHERE status = 'Dipakai' AND id_ruangan NOT IN (" +
+                    "  SELECT id_ruangan FROM peminjaman " +
+                    "  WHERE tanggal_pinjam = CURDATE() " +
+                    "  AND CURTIME() BETWEEN jam_mulai AND jam_selesai " +
+                    "  AND status_verifikasi = 'Disetujui')";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlTersedia)) {
+            
+            RuanganDAO dao = new RuanganDAO();
+            while (rs.next()) {
+                Ruangan r = new Ruangan(
+                    rs.getInt("id_ruangan"),
+                    rs.getString("nama_ruangan"),
+                    rs.getInt("kapasitas"),
+                    rs.getString("fasilitas"),
+                    rs.getString("lokasi")
+                );
+                r.setStatus("Tersedia");
+                dao.ubah(r);
+            }
+        } catch (Exception e) {
+            Alerts.error("Error refresh tersedia: " + e.getMessage());
+        }
     }
 }

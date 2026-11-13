@@ -2,6 +2,7 @@ module com.simaru {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires mysql.connector.j;
 
     opens com.simaru.controller to javafx.fxml;
     opens com.simaru.dao to javafx.fxml;

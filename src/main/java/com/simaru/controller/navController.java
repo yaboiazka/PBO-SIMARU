@@ -3,6 +3,7 @@ package com.simaru.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.simaru.dao.RuanganDAO;
 import com.simaru.model.Pengguna;
 import com.simaru.util.Navigator;
 import com.simaru.util.Session;
@@ -59,6 +60,7 @@ public class navController implements Initializable {
     }
     @FXML
     void SwitchToListRuangan(ActionEvent event) {
+        RuanganDAO.refresh();
         Navigator.show("LihatRuangan", "SIMARU - Lihat Ruangan", 800, 600);
     }
 

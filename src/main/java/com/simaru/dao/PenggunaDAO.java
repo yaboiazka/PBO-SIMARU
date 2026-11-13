@@ -19,7 +19,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
     public static Pengguna login(String email, String password) {
         Connection conn = Database.getConnection();
         String query = "SELECT p.*, ps.fakultas, ps.program_studi " + "FROM pengguna p " + "LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi " + "WHERE p.email = ? AND p.password = ?";
-            try {
+        try {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, email);
             pstmt.setString(2, Hash.hashSHA256(password));
@@ -52,6 +52,7 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
         }
         return null;
     }
+    //jujur kenapa ada ini ya
     public static boolean register(Pengguna pengguna) {
         Connection conn = Database.getConnection();
         String query = "INSERT INTO pengguna (nama, email, password) VALUES (?, ?, ?)";

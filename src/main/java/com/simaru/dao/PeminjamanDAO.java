@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.simaru.model.Jadwal;
 import com.simaru.model.Peminjaman;
 import com.simaru.model.Ruangan;
 import com.simaru.util.Alerts;
@@ -47,6 +48,14 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
             pstmt.setObject(4, peminjaman.getJamMulai());
             pstmt.setObject(5, peminjaman.getJamSelesai());
             pstmt.setString(6, peminjaman.getKeperluan());
+
+            Jadwal jadwalBaru = new Jadwal(peminjaman.getIdRuangan(), peminjaman.getIdPeminjaman());
+            jadwalBaru.setTanggal(peminjaman.getTanggal());
+            jadwalBaru.setJamMulai(peminjaman.getJamMulai());
+            jadwalBaru.setJamMulai(peminjaman.getJamSelesai());
+            JadwalDAO jadwalDAOBaru = new JadwalDAO();
+            jadwalDAOBaru.tambah(jadwalBaru);
+
             int status = pstmt.executeUpdate();
             if (status != 0) {
                 Alerts.info("Peminjaman berhasil, harap tunggu verifikasi admin");
@@ -57,20 +66,28 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
     }
 
     @Override
-    public void ubah(Peminjaman data) {
+    public void ubah(Peminjaman peminjaman) {
         Connection conn = Database.getConnection();
         String query = "UPDATE peminjaman SET id_pengguna = ?, id_ruangan = ?, tanggal_pinjam = ?, jam_mulai = ?, jam_selesai = ?, keperluan = ?, status_verifikasi = ?, tanggal_pengajuan = ? WHERE id_peminjaman = ?";
         try {
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, data.getIdPengguna());
-            pstmt.setInt(2, data.getIdRuangan());
-            pstmt.setObject(3, data.getTanggal());
-            pstmt.setObject(4, data.getJamMulai());
-            pstmt.setObject(5, data.getJamSelesai());
-            pstmt.setString(6, data.getKeperluan());
-            pstmt.setString(7, data.getStatus());
-            pstmt.setObject(8, data.getTanggalPengajuan());
-            pstmt.setInt(9, data.getIdPeminjaman());
+            pstmt.setInt(1, peminjaman.getIdPengguna());
+            pstmt.setInt(2, peminjaman.getIdRuangan());
+            pstmt.setObject(3, peminjaman.getTanggal());
+            pstmt.setObject(4, peminjaman.getJamMulai());
+            pstmt.setObject(5, peminjaman.getJamSelesai());
+            pstmt.setString(6, peminjaman.getKeperluan());
+            pstmt.setString(7, peminjaman.getStatus());
+            pstmt.setObject(8, peminjaman.getTanggalPengajuan());
+            pstmt.setInt(9, peminjaman.getIdPeminjaman());
+
+            Jadwal ubahJadwal = new Jadwal(peminjaman.getIdRuangan(), peminjaman.getIdPeminjaman());
+            ubahJadwal.setTanggal(peminjaman.getTanggal());
+            ubahJadwal.setJamMulai(peminjaman.getJamMulai());
+            ubahJadwal.setJamMulai(peminjaman.getJamSelesai());
+            JadwalDAO ubahJadwalDAO = new JadwalDAO();
+            ubahJadwalDAO.ubah(ubahJadwal);
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             Alerts.error("Error during updating Peminjaman: " + e.getMessage());
@@ -92,7 +109,7 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
             System.err.println("Error during deleting Peminjaman: " + e.getMessage());
         }
         
-        throw new UnsupportedOperationException("Not supported yet.");
+        // throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -154,7 +171,6 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
     }
 
     public void preTambah(Ruangan ruangTerpilih, LocalDate tanggal, LocalTime jamMulai, LocalTime jamSelesai, String Keperluan){
-        
         int id_peminjam = (Session.getCurrent()).getIdPengguna();
         int id_ruangan = ruangTerpilih.getIdRuangan();
         String nama_peminjam = (Session.getCurrent()).getNama();
@@ -166,5 +182,13 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
         Peminjaman p = new Peminjaman(id_peminjam, id_ruangan, nama_peminjam, nama_ruang_dipinjam, tanggal_dipinjam, jam_mulai, jam_selesai, keperluan);
 
         tambah(p);
+    }
+
+    private static int chekiNabrak (Peminjaman peminjaman){
+        Connection conn = Database.getConnection();
+        try{
+
+        }
+        return hasil;
     }
 }

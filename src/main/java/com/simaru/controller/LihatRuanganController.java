@@ -69,6 +69,7 @@ public class LihatRuanganController implements Initializable {
     @FXML
     private void onFilter() {
         System.out.println();
+        RuanganDAO.refresh();
         loadData();
     }
 }
