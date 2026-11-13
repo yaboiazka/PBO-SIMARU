@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import com.simaru.dao.PenggunaDAO;
 import com.simaru.model.Pengguna;
+import com.simaru.util.Alerts;
 import com.simaru.util.Navigator;
 import com.simaru.util.Session;
 
@@ -43,6 +44,7 @@ public class loginController {
             System.out.println((session.getCurrent()).getClass().getSimpleName());
             System.out.println("Login berhasil!");
         } else {
+            Alerts.info("email");
             System.out.println("Email atau password salah.");
         }
     }

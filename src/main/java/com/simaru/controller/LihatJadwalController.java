@@ -44,20 +44,11 @@ public class LihatJadwalController implements Initializable{
 
     @Override 
     public void initialize(URL location, ResourceBundle resources) {
-        // 1. Hubungkan kolom FXML dengan getter di class Ruangan
         colRuangan.setCellValueFactory(new PropertyValueFactory<>("namaRuangan"));
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
         colJam.setCellValueFactory(new PropertyValueFactory<>("timeRange"));
         colPengguna.setCellValueFactory(new PropertyValueFactory<>("namaPengguna"));
         colKeperluan.setCellValueFactory(new PropertyValueFactory<>("keperluan"));
-
-        // colRuangan.setCellValueFactory(new PropertyValueFactory<>("namaRuangan"));
-        // colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
-        // colJam.setCellValueFactory(new PropertyValueFactory<>("jam"));
-        // colPengguna.setCellValueFactory(new PropertyValueFactory<>("namaPengguna"));
-        // colKeperluan.setCellValueFactory(new PropertyValueFactory<>("keperluan"));
-
-        // 2. Load data dari database ke TableView
         loadData(null);
     }
 

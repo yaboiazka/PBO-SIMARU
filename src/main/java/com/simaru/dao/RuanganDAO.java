@@ -110,6 +110,26 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
         }
         return null;
     }
+    public List<Integer> tampilkanIdSaja() {
+        String query = "SELECT id_ruangan FROM ruangan";
+        Connection conn = Database.getConnection();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                List<Integer> idRuanganList = new ArrayList<>();
+                while (rs.next()) {
+                    int id = rs.getInt("id_ruangan");
+                    idRuanganList.add(id);
+                }
+                return idRuanganList;
+            }
+        } catch (Exception e) {
+            Alerts.error("Error during displaying Ruangan: " + e.getMessage());
+            System.err.println("Error during displaying Ruangan: " + e.getMessage());
+        }
+        return null;
+    }
 
     public Ruangan cari(int id_ruangan) {
         Connection conn = Database.getConnection();

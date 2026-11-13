@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.simaru.util.Alerts;
+
 
 public class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/manajemen_ruangan";
@@ -16,7 +18,7 @@ public class Database {
             Class.forName(DRIVER);
             return DriverManager.getConnection(URL, USER, PASS);
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            Alerts.error("Error connecting to database: " + e.getMessage());
             return null;
         }
     }

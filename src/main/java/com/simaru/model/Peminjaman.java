@@ -12,12 +12,13 @@ public class Peminjaman {
     private LocalDate tanggal;
     private LocalTime jam_mulai;
     private LocalTime jam_selesai;
+    private LocalDate tanggal_pengajuan;
     private String keperluan;
     private String status;
     private String catatan;
 
-    public Peminjaman(int id_peminjaman, int id_pengguna, int id_ruangan, String nama_pengguna, String nama_ruangan, LocalDate tanggal, LocalTime jam_mulai,  LocalTime jam_selesai, String keperluan, String status, String catatan) {
-        this.id_peminjaman = id_peminjaman;
+    public Peminjaman(int id_pengguna, int id_ruangan, String nama_pengguna, String nama_ruangan, LocalDate tanggal, LocalTime jam_mulai,  LocalTime jam_selesai, String keperluan) {
+        // this.id_peminjaman = id_peminjaman;
         this.id_pengguna = id_pengguna;
         this.id_ruangan = id_ruangan;
         this.nama_pengguna = nama_pengguna;
@@ -26,8 +27,8 @@ public class Peminjaman {
         this.jam_mulai = jam_mulai;
         this.jam_selesai = jam_selesai;
         this.keperluan = keperluan;
-        this.status = status;
-        this.catatan = catatan;
+        // this.status = status;
+        // this.catatan = catatan;
     }
 
     // Getter dan Setter
@@ -71,6 +72,13 @@ public class Peminjaman {
     }
     public void setTanggal(LocalDate tanggal) {
         this.tanggal = tanggal;
+    }
+
+    public LocalDate getTanggalPengajuan() {
+        return tanggal_pengajuan;
+    }
+    public void setTanggalPengajuan(LocalDate tanggal) {
+        this.tanggal = tanggal_pengajuan;
     }
 
     public LocalTime getJamMulai() {

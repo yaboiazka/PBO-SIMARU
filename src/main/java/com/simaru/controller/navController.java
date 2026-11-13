@@ -14,21 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
 public class navController implements Initializable {
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Pengguna userAktif = Session.getCurrent();
-        
-        if (userAktif != null) {
-            // Mengisi Text dengan data asli dari database/session
-            nameText.setText(userAktif.getNama());
-            roleText.setText(userAktif.getClass().getSimpleName());
-        } else {
-            nameText.setText("Guest");
-            roleText.setText("-");
-        }
-    }
-
     @FXML
     private Button listRuanganButton;
 
@@ -50,9 +35,22 @@ public class navController implements Initializable {
     @FXML
     private Button statusPeminjamanButton;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Pengguna userAktif = Session.getCurrent();
+        
+        if (userAktif != null) {
+            nameText.setText(userAktif.getNama());
+            roleText.setText(userAktif.getClass().getSimpleName());
+        } else {
+            nameText.setText("Guest");
+            roleText.setText("-");
+        }
+    }
 
     @FXML
     void SwitchToPeminjaman(ActionEvent event) {
+        Navigator.show("AjukanPeminjaman", "SIMARU - Ajukan peminjaman", 800, 600);
     }
     
     @FXML

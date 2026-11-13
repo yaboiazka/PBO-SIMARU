@@ -7,39 +7,68 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="12" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.simaru.controller.AjukanPeminjamanController">
-    <padding>
-        <Insets bottom="16" left="16" right="16" top="16"/>
-    </padding>
+<VBox spacing="12" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.simaru.controller.AjukanPeminjamanController">
+    
+    <fx:include source="nav.fxml" />
 
-    <Label styleClass="judul" text="Ajukan Peminjaman Ruangan"/>
-    <Label styleClass="sub-judul" text="Hanya ruangan berstatus Tersedia yang bisa dipilih. Pengajuan akan berstatus Pending sampai diverifikasi admin."
-           wrapText="true"/>
+    <Label styleClass="judul" text="Ajukan Peminjaman Ruangan" />
+    <Label styleClass="sub-judul" text="Hanya ruangan berstatus Tersedia yang bisa dipilih. Pengajuan akan berstatus Pending sampai diverifikasi admin." wrapText="true" />
 
     <VBox maxWidth="480" spacing="10">
         <VBox spacing="4">
-            <Label text="Ruangan"/>
-            <ComboBox fx:id="cbRuangan" maxWidth="Infinity" promptText="Pilih ruangan"/>
+            <Label text="Ruangan" />
+            <ComboBox fx:id="cbRuangan" maxWidth="Infinity" promptText="Pilih ruangan" />
         </VBox>
         <VBox spacing="4">
-            <Label text="Tanggal"/>
-            <DatePicker fx:id="dpTanggal" maxWidth="Infinity"/>
+            <Label text="Tanggal" />
+            <DatePicker fx:id="dpTanggal" maxWidth="Infinity" />
         </VBox>
         <VBox spacing="4">
-            <Label text="Jam mulai (HH:mm)"/>
-            <TextField fx:id="tfJamMulai" promptText="08:00"/>
+         <HBox prefHeight="0.0" prefWidth="480.0" spacing="16.0">
+            <children>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                     <Label text="Jam mulai" />
+                     <TextField fx:id="tfJamMulai" promptText="08" />
+                  </children>
+               </VBox>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                        <Label text="Menit mulai" />
+                        <TextField fx:id="tfMenitMulai" promptText="00" />
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
         </VBox>
         <VBox spacing="4">
-            <Label text="Jam selesai (HH:mm)"/>
-            <TextField fx:id="tfJamSelesai" promptText="10:00"/>
+         <HBox prefHeight="2.0" prefWidth="480.0" spacing="16.0">
+            <children>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                     <Label text="Jam selesai" />
+                     <TextField fx:id="tfJamSelesai" promptText="10" />
+                  </children>
+               </VBox>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                        <Label text="Menit selesai" />
+                        <TextField fx:id="tfMenitSelesai" promptText="00" />
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
         </VBox>
         <VBox spacing="4">
-            <Label text="Keperluan"/>
-            <TextArea fx:id="taKeperluan" prefRowCount="3" wrapText="true"/>
+            <Label text="Keperluan" />
+            <TextArea fx:id="taKeperluan" prefRowCount="3" wrapText="true" />
         </VBox>
-        <Button onAction="#onAjukan" styleClass="tombol-utama" text="Ajukan Peminjaman"/>
+        <Button onAction="#onAjukan" styleClass="tombol-utama" text="Ajukan Peminjaman" />
     </VBox>
+    <padding>
+        <Insets bottom="16" left="16" right="16" top="16" />
+    </padding>
 </VBox>

@@ -61,4 +61,8 @@ public class Ruangan {
     public boolean cekKetersediaan() {
         return "tersedia".equalsIgnoreCase(status);
     }
+    @Override
+    public String toString() {
+        return this.nama_ruangan + " (" + lokasi + ")";
+    }
 }
