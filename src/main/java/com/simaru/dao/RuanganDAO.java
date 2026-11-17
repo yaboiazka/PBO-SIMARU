@@ -84,31 +84,32 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
     }
     @Override
     public List<Ruangan> tampilkan() {
-        String query = "SELECT * FROM ruangan";
+        List<Ruangan> ruanganList = new ArrayList<>();
         Connection conn = Database.getConnection();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs != null) {
-                List<Ruangan> ruanganList = new ArrayList<>();
-                while (rs.next()) {
-                    int id = rs.getInt("id_ruangan");
-                    String nama = rs.getString("nama_ruangan");
-                    int kapasitas = rs.getInt("kapasitas");
-                    String lokasi = rs.getString("lokasi");
-                    String fasilitas = rs.getString("fasilitas");
-                    String status = rs.getString("status");
-                    Ruangan ruangan = new Ruangan(id, nama, kapasitas, fasilitas, lokasi);
-                    ruangan.setStatus(status);
-                    ruanganList.add(ruangan);
-                }
-                return ruanganList;
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return ruanganList;
+        }
+        String query = "SELECT * FROM ruangan ORDER BY nama_ruangan";
+        try (Connection koneksi = conn;
+                PreparedStatement pstmt = koneksi.prepareStatement(query);
+                ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("id_ruangan");
+                String nama = rs.getString("nama_ruangan");
+                int kapasitas = rs.getInt("kapasitas");
+                String lokasi = rs.getString("lokasi");
+                String fasilitas = rs.getString("fasilitas");
+                String status = rs.getString("status");
+                Ruangan ruangan = new Ruangan(id, nama, kapasitas, fasilitas, lokasi);
+                ruangan.setStatus(status);
+                ruanganList.add(ruangan);
             }
         } catch (Exception e) {
             Alerts.error("Error during displaying Ruangan: " + e.getMessage());
             System.err.println("Error during displaying Ruangan: " + e.getMessage());
         }
-        return null;
+        return ruanganList;
     }
 
     public Ruangan cari(int id_ruangan) {
