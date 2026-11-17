@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="root" stylesheets="@../css/dashboard.css, @../css/status.css"
+            xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.simaru.controller.DashboardMahasiswaController">
+    <left>
+        <VBox prefWidth="220" spacing="4" styleClass="sidebar">
+            <padding>
+                <Insets bottom="16" left="12" right="12" top="16" />
+            </padding>
+            <Label styleClass="sidebar-judul" text="SIMARU">
+            <font>
+               <Font name="System Bold Italic" size="24.0" />
+            </font></Label>
+            <Label fx:id="lblNama" text="Pengguna" />
+            <Label fx:id="lblPeran" styleClass="sub-judul" text="Mahasiswa" />
+            <Region prefHeight="16" />
+            <Button maxWidth="Infinity" onAction="#onBeranda" styleClass="menu-button" text="Beranda" />
+            <Button maxWidth="Infinity" onAction="#onAjukan" styleClass="menu-button" text="Ajukan Peminjaman" />
+            <Button maxWidth="Infinity" onAction="#onStatus" styleClass="menu-button" text="Status Peminjaman" />
+            <Button maxWidth="Infinity" onAction="#onJadwal" styleClass="menu-button" text="Jadwal Ruangan" />
+            <Button maxWidth="Infinity" onAction="#onRuangan" styleClass="menu-button" text="Lihat Ruangan" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button maxWidth="Infinity" onAction="#onLogout" styleClass="menu-button" text="Logout" />
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="14" styleClass="beranda">
+            <padding>
+                <Insets bottom="24" left="24" right="24" top="24" />
+            </padding>
+            <Label styleClass="judul" text="Dashboard Mahasiswa dan Dosen" />
+            <Label styleClass="kartu-isi" wrapText="true"
+                   text="Ajukan peminjaman ruangan, pantau status pengajuan, dan lihat jadwal pemakaian ruangan melalui menu di kiri." />
+            <VBox styleClass="kartu" spacing="6">
+                <Label styleClass="kartu-judul" text="Informasi" />
+                <Label styleClass="kartu-isi" wrapText="true"
+                       text="Pengajuan baru berstatus Pending sampai Admin memverifikasi. Pengajuan yang masih Pending dapat dibatalkan dari halaman Status Peminjaman." />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
