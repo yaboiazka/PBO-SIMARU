@@ -12,7 +12,7 @@ public class Dosen extends Pengguna {
 
     @Override
     public String getHakAkses() {
-        return "LIHAT_RUANGAN, LIHAT_JADWAL";
+        return "LIHAT_RUANGAN, AJUKAN_PEMINJAMAN, LIHAT_STATUS, LIHAT_JADWAL";
     }
 
     public String getRole() {

@@ -131,7 +131,12 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
     private List<Peminjaman> query(String sql, Integer intParam, LocalDate dateParam) {
         Connection conn = Database.getConnection();
         List<Peminjaman> hasil = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return hasil;
+        }
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
             if (intParam != null) {
                 ps.setInt(1, intParam);
             }
@@ -145,7 +150,8 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
                 }
             }
         } catch (SQLException e) {
-            Alerts.error("Error during adding user: " + e.getMessage());
+            Alerts.error("Gagal memuat data peminjaman.");
+            System.err.println("Gagal memuat data peminjaman: " + e.getMessage());
         }
         return hasil;
     }

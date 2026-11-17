@@ -21,36 +21,45 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
 
     public static Pengguna login(String email, String password) {
         Connection conn = Database.getConnection();
-        String query = "SELECT p.*, ps.fakultas, ps.program_studi " + "FROM pengguna p " + "LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi " + "WHERE p.email = ? AND p.password = ?";
-            try {
-            PreparedStatement pstmt = conn.prepareStatement(query);
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return null;
+        }
+        String query = "SELECT p.*, ps.fakultas, ps.program_studi "
+                + "FROM pengguna p "
+                + "LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi "
+                + "WHERE p.email = ? AND p.password = ?";
+        try (Connection koneksi = conn;
+                PreparedStatement pstmt = koneksi.prepareStatement(query)) {
             pstmt.setString(1, email);
             pstmt.setString(2, Hash.hashSHA256(password));
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                int id_pengguna = rs.getInt("id_pengguna");
-                String nama = rs.getString("nama");
-                String db_email = rs.getString("email");
-                String db_password = rs.getString("password");
-                String role = rs.getString("role");
-                if (Role.ADMIN.equals(role)) {
-                    Admin admin = new Admin(id_pengguna, nama, db_email, db_password, role);
-                    return lengkapi(admin, rs);
-                } else if (Role.DOSEN.equals(role)) {
-                    String nip = rs.getString("nim_nip");
-                    String fakultas = rs.getString("fakultas");
-                    Dosen dosen = new Dosen(id_pengguna, nama, db_email, db_password, nip, fakultas);
-                    return lengkapi(dosen, rs);
-                } else {
-                    String nim = rs.getString("nim_nip");
-                    String prodi = rs.getString("program_studi");
-                    Mahasiswa mahasiswa = new Mahasiswa(id_pengguna, nama, db_email, db_password, nim, prodi);
-                    return lengkapi(mahasiswa, rs);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int id_pengguna = rs.getInt("id_pengguna");
+                    String nama = rs.getString("nama");
+                    String db_email = rs.getString("email");
+                    String db_password = rs.getString("password");
+                    String role = rs.getString("role");
+                    if (Role.ADMIN.equals(role)) {
+                        Admin admin = new Admin(id_pengguna, nama, db_email, db_password, role);
+                        return lengkapi(admin, rs);
+                    } else if (Role.DOSEN.equals(role)) {
+                        String nip = rs.getString("nim_nip");
+                        String fakultas = rs.getString("fakultas");
+                        Dosen dosen = new Dosen(id_pengguna, nama, db_email, db_password, nip, fakultas);
+                        return lengkapi(dosen, rs);
+                    } else {
+                        String nim = rs.getString("nim_nip");
+                        String prodi = rs.getString("program_studi");
+                        Mahasiswa mahasiswa = new Mahasiswa(id_pengguna, nama, db_email, db_password,
+                                nim, prodi);
+                        return lengkapi(mahasiswa, rs);
+                    }
                 }
             }
         } catch (Exception e) {
-            Alerts.error("Error during checking user: " + e.getMessage());
-            System.err.println("Error during checking user: " + e.getMessage());
+            Alerts.error("Gagal memeriksa akun. Pastikan server database berjalan.");
+            System.err.println("Gagal memeriksa akun: " + e.getMessage());
             return null;
         }
         return null;
@@ -163,11 +172,17 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
     }
     public List<Pengguna> tampilkan() {
         Connection conn = Database.getConnection();
-        String query = "SELECT p.*, ps.fakultas, ps.program_studi " + "FROM pengguna p " + "LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi";
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return new ArrayList<>();
+        }
+        String query = "SELECT p.*, ps.fakultas, ps.program_studi "
+                + "FROM pengguna p "
+                + "LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi";
         List<Pengguna> penggunaList = new ArrayList<>();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
+        try (Connection koneksi = conn;
+                PreparedStatement pstmt = koneksi.prepareStatement(query);
+                ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 int id_pengguna = rs.getInt("id_pengguna");
                 String nama = rs.getString("nama");
@@ -189,8 +204,9 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                     penggunaList.add(lengkapi(mahasiswa, rs));
                 }
             }
-        } catch (Exception e) {
-            Alerts.error("Error during fetching users: " + e.getMessage());
+        } catch (SQLException e) {
+            Alerts.error("Gagal memuat data pengguna.");
+            System.err.println("Gagal memuat data pengguna: " + e.getMessage());
         }
         return penggunaList;
     }
