@@ -1,6 +1,7 @@
 package com.simaru.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Peminjaman {
@@ -15,6 +16,16 @@ public class Peminjaman {
     private String keperluan;
     private String status;
     private String catatan;
+
+    // Atribut tambahan (append-only) untuk halaman status, verifikasi, dan laporan.
+    private String lokasi;
+    private String peran;
+    private String statusRuangan;
+    private int kapasitas;
+    private LocalDateTime tanggalPengajuan;
+    private String namaAdmin;
+    private LocalDateTime tanggalVerifikasi;
+    private String nomorIdentitas;
 
     public Peminjaman(int id_peminjaman, int id_pengguna, int id_ruangan, String nama_pengguna, String nama_ruangan, LocalDate tanggal, LocalTime jam_mulai,  LocalTime jam_selesai, String keperluan, String status, String catatan) {
         this.id_peminjaman = id_peminjaman;
@@ -110,5 +121,61 @@ public class Peminjaman {
 
     public String getTimeRange() {
         return jam_mulai + " - " + jam_selesai;
+    }
+
+    public String getLokasi() {
+        return lokasi;
+    }
+    public void setLokasi(String lokasi) {
+        this.lokasi = lokasi;
+    }
+
+    public String getPeran() {
+        return peran;
+    }
+    public void setPeran(String peran) {
+        this.peran = peran;
+    }
+
+    public String getStatusRuangan() {
+        return statusRuangan;
+    }
+    public void setStatusRuangan(String statusRuangan) {
+        this.statusRuangan = statusRuangan;
+    }
+
+    public int getKapasitas() {
+        return kapasitas;
+    }
+    public void setKapasitas(int kapasitas) {
+        this.kapasitas = kapasitas;
+    }
+
+    public LocalDateTime getTanggalPengajuan() {
+        return tanggalPengajuan;
+    }
+    public void setTanggalPengajuan(LocalDateTime tanggalPengajuan) {
+        this.tanggalPengajuan = tanggalPengajuan;
+    }
+
+    public String getNamaAdmin() {
+        return namaAdmin;
+    }
+    public void setNamaAdmin(String namaAdmin) {
+        this.namaAdmin = namaAdmin;
+    }
+
+    public LocalDateTime getTanggalVerifikasi() {
+        return tanggalVerifikasi;
+    }
+    public void setTanggalVerifikasi(LocalDateTime tanggalVerifikasi) {
+        this.tanggalVerifikasi = tanggalVerifikasi;
+    }
+
+    public String getNomorIdentitas() {
+        return nomorIdentitas;
+    }
+    public void setNomorIdentitas(String nomorIdentitas) {
+        this.nomorIdentitas = nomorIdentitas;
     }
 }

@@ -1,0 +1,44 @@
+.judul {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.sub-judul {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+
+.ringkasan {
+    -fx-font-weight: bold;
+}
+
+.status-pending {
+    -fx-text-fill: #b8860b;
+    -fx-font-weight: bold;
+}
+
+.status-disetujui {
+    -fx-text-fill: #1e7e34;
+    -fx-font-weight: bold;
+}
+
+.status-ditolak {
+    -fx-text-fill: #c62828;
+    -fx-font-weight: bold;
+}
+
+.peringatan {
+    -fx-text-fill: #c62828;
+    -fx-font-weight: bold;
+}
+
+.tombol-utama {
+    -fx-base: #2e7d32;
+    -fx-font-weight: bold;
+}
+
+.tombol-bahaya {
+    -fx-base: #c62828;
+    -fx-font-weight: bold;
+}
