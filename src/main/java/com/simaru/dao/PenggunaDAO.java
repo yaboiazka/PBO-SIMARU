@@ -228,4 +228,150 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
             return null;
         }
     }
+
+    // =====================================================================
+    // Tambahan untuk halaman Kelola Pengguna (append-only).
+    // =====================================================================
+
+    public boolean tambahLengkap(String nama, String nimNip, String email, String password,
+            String role, Integer idProdi) {
+        if (kosong(nama) || kosong(nimNip) || kosong(email) || kosong(password)) {
+            Alerts.warning("Nama, NIM/NIP, email, dan password wajib diisi.");
+            return false;
+        }
+        if (!roleValid(role)) {
+            Alerts.warning("Peran pengguna tidak valid.");
+            return false;
+        }
+        if (Role.ADMIN.equals(role) && idProdi != null) {
+            idProdi = null;
+        }
+        if (!Role.ADMIN.equals(role) && idProdi == null) {
+            Alerts.warning("Program studi wajib dipilih untuk Mahasiswa atau Dosen.");
+            return false;
+        }
+        Connection conn = Database.getConnection();
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return false;
+        }
+        String sql = "INSERT INTO pengguna (nama, nim_nip, email, password, role, id_prodi) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setString(1, nama.trim());
+            ps.setString(2, nimNip.trim());
+            ps.setString(3, email.trim());
+            ps.setString(4, Hash.hashSHA256(password));
+            ps.setString(5, role);
+            ps.setObject(6, idProdi);
+            return ps.executeUpdate() > 0;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            Alerts.error("Email atau NIM/NIP sudah terdaftar.");
+            System.err.println("Tambah pengguna ditolak: " + e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            Alerts.error("Gagal menambah pengguna: " + e.getMessage());
+            System.err.println("Gagal menambah pengguna: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            Alerts.error("Gagal menambah pengguna: " + e.getMessage());
+            System.err.println("Gagal menambah pengguna: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean ubahLengkap(int idPengguna, String nama, String nimNip, String email,
+            String passwordBaru, String role, Integer idProdi) {
+        if (idPengguna <= 0) {
+            Alerts.warning("Pilih salah satu pengguna terlebih dahulu.");
+            return false;
+        }
+        if (kosong(nama) || kosong(nimNip) || kosong(email)) {
+            Alerts.warning("Nama, NIM/NIP, dan email wajib diisi.");
+            return false;
+        }
+        if (!roleValid(role)) {
+            Alerts.warning("Peran pengguna tidak valid.");
+            return false;
+        }
+        if (Role.ADMIN.equals(role) && idProdi != null) {
+            idProdi = null;
+        }
+        if (!Role.ADMIN.equals(role) && idProdi == null) {
+            Alerts.warning("Program studi wajib dipilih untuk Mahasiswa atau Dosen.");
+            return false;
+        }
+        boolean gantiPassword = !kosong(passwordBaru);
+        Connection conn = Database.getConnection();
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return false;
+        }
+        String sql = gantiPassword
+                ? "UPDATE pengguna SET nama = ?, nim_nip = ?, email = ?, password = ?, role = ?, "
+                        + "id_prodi = ? WHERE id_pengguna = ?"
+                : "UPDATE pengguna SET nama = ?, nim_nip = ?, email = ?, role = ?, id_prodi = ? "
+                        + "WHERE id_pengguna = ?";
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            int i = 1;
+            ps.setString(i++, nama.trim());
+            ps.setString(i++, nimNip.trim());
+            ps.setString(i++, email.trim());
+            if (gantiPassword) {
+                ps.setString(i++, Hash.hashSHA256(passwordBaru));
+            }
+            ps.setString(i++, role);
+            ps.setObject(i++, idProdi);
+            ps.setInt(i, idPengguna);
+            return ps.executeUpdate() > 0;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            Alerts.error("Email atau NIM/NIP sudah dipakai pengguna lain.");
+            System.err.println("Ubah pengguna ditolak: " + e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            Alerts.error("Gagal mengubah pengguna: " + e.getMessage());
+            System.err.println("Gagal mengubah pengguna: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            Alerts.error("Gagal mengubah pengguna: " + e.getMessage());
+            System.err.println("Gagal mengubah pengguna: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean hapusAman(int idPengguna) {
+        if (idPengguna <= 0) {
+            Alerts.warning("Pilih salah satu pengguna terlebih dahulu.");
+            return false;
+        }
+        Connection conn = Database.getConnection();
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return false;
+        }
+        String sql = "DELETE FROM pengguna WHERE id_pengguna = ?";
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setInt(1, idPengguna);
+            return ps.executeUpdate() > 0;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            Alerts.error("Pengguna tidak bisa dihapus karena memiliki data peminjaman atau verifikasi.");
+            System.err.println("Hapus pengguna ditolak FK: " + e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            Alerts.error("Gagal menghapus pengguna: " + e.getMessage());
+            System.err.println("Gagal menghapus pengguna: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private static boolean roleValid(String role) {
+        return Role.ADMIN.equals(role) || Role.DOSEN.equals(role) || Role.MAHASISWA.equals(role);
+    }
+
+    private static boolean kosong(String nilai) {
+        return nilai == null || nilai.isBlank();
+    }
 }
