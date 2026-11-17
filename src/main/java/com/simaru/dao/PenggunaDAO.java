@@ -3,6 +3,8 @@ package com.simaru.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import com.simaru.model.Mahasiswa;
 import com.simaru.model.Pengguna;
 import com.simaru.util.Alerts;
 import com.simaru.util.Hash;
+import com.simaru.util.Role;
 
 
 public class PenggunaDAO implements CrudOperation<Pengguna> {
@@ -30,19 +33,19 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 String db_email = rs.getString("email");
                 String db_password = rs.getString("password");
                 String role = rs.getString("role");
-                if ("ADMIN".equals(role)) {
+                if (Role.ADMIN.equals(role)) {
                     Admin admin = new Admin(id_pengguna, nama, db_email, db_password, role);
-                    return admin;
-                } else if ("DOSEN".equals(role)) {
+                    return lengkapi(admin, rs);
+                } else if (Role.DOSEN.equals(role)) {
                     String nip = rs.getString("nim_nip");
                     String fakultas = rs.getString("fakultas");
                     Dosen dosen = new Dosen(id_pengguna, nama, db_email, db_password, nip, fakultas);
-                    return dosen;
+                    return lengkapi(dosen, rs);
                 } else {
                     String nim = rs.getString("nim_nip");
                     String prodi = rs.getString("program_studi");
                     Mahasiswa mahasiswa = new Mahasiswa(id_pengguna, nama, db_email, db_password, nim, prodi);
-                    return mahasiswa;
+                    return lengkapi(mahasiswa, rs);
                 }
             }
         } catch (Exception e) {
@@ -52,6 +55,47 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
         }
         return null;
     }
+
+    private static Pengguna lengkapi(Pengguna pengguna, ResultSet rs) throws SQLException {
+        int idProdi = rs.getInt("id_prodi");
+        pengguna.setIdProdi(rs.wasNull() ? null : Integer.valueOf(idProdi));
+        pengguna.setNomorIdentitas(rs.getString("nim_nip"));
+        pengguna.setNamaProdi(rs.getString("program_studi"));
+        return pengguna;
+    }
+
+    /**
+     * Registrasi mandiri: peran selalu MAHASISWA.
+     *
+     * @return null jika berhasil, atau pesan ramah untuk UI.
+     */
+    public static String registrasi(String nama, String nimNip, String email,
+            String password, int idProdi) {
+        Connection conn = Database.getConnection();
+        if (conn == null) {
+            return "Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.";
+        }
+        String sql = "INSERT INTO pengguna (nama, nim_nip, email, password, role, id_prodi) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setString(1, nama);
+            ps.setString(2, nimNip);
+            ps.setString(3, email);
+            ps.setString(4, Hash.hashSHA256(password));
+            ps.setString(5, Role.MAHASISWA);
+            ps.setInt(6, idProdi);
+            ps.executeUpdate();
+            return null;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.err.println("Registrasi ditolak (duplikat): " + e.getMessage());
+            return "Email atau NIM/NIP sudah terdaftar.";
+        } catch (Exception e) {
+            System.err.println("Registrasi gagal: " + e.getMessage());
+            return "Registrasi gagal. Silakan coba lagi.";
+        }
+    }
+
     public static boolean register(Pengguna pengguna) {
         Connection conn = Database.getConnection();
         String query = "INSERT INTO pengguna (nama, email, password) VALUES (?, ?, ?)";
@@ -130,19 +174,19 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 String role = rs.getString("role");
-                if ("ADMIN".equals(role)) {
+                if (Role.ADMIN.equals(role)) {
                     Admin admin = new Admin(id_pengguna, nama, email, password, role);
-                    penggunaList.add(admin);
-                } else if ("DOSEN".equals(role)) {
+                    penggunaList.add(lengkapi(admin, rs));
+                } else if (Role.DOSEN.equals(role)) {
                     String nip = rs.getString("nim_nip");
                     String fakultas = rs.getString("fakultas");
                     Dosen dosen = new Dosen(id_pengguna, nama, email, password, nip, fakultas);
-                    penggunaList.add(dosen);
+                    penggunaList.add(lengkapi(dosen, rs));
                 } else {
                     String nim = rs.getString("nim_nip");
                     String prodi = rs.getString("program_studi");
                     Mahasiswa mahasiswa = new Mahasiswa(id_pengguna, nama, email, password, nim, prodi);
-                    penggunaList.add(mahasiswa);
+                    penggunaList.add(lengkapi(mahasiswa, rs));
                 }
             }
         } catch (Exception e) {

@@ -1,15 +1,14 @@
 package com.simaru.controller;
 
-import java.io.UnsupportedEncodingException;
-
 import com.simaru.dao.PenggunaDAO;
 import com.simaru.model.Pengguna;
+import com.simaru.util.Alerts;
 import com.simaru.util.Navigator;
 import com.simaru.util.Session;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class loginController {
@@ -18,38 +17,34 @@ public class loginController {
     private TextField emailArea;
 
     @FXML
-    private Button loginButton;
+    private PasswordField passwordArea;
 
     @FXML
-    private TextField passwordArea;
+    void handleLogin(ActionEvent event) {
+        String email = emailArea.getText() == null ? "" : emailArea.getText().trim();
+        String password = passwordArea.getText() == null ? "" : passwordArea.getText();
 
-    @FXML
-    void handleLogin(ActionEvent event) throws UnsupportedEncodingException, Exception {
-        String email = emailArea.getText();
-        String password = passwordArea.getText();
+        if (email.isEmpty() || password.isEmpty()) {
+            Alerts.warning("Email dan password wajib diisi.");
+            return;
+        }
 
         Pengguna pengguna = PenggunaDAO.login(email, password);
-        
-        if (pengguna != null) {
-            Session session = new Session(pengguna);
+        if (pengguna == null) {
+            Alerts.error("Email atau password salah.");
+            return;
+        }
 
-            if (Session.isAdmin()) {
-                // Redirect to admin dashboard
-                System.out.println("Login berhasil! Redirecting to admin dashboard...");
-            } else{
-                // setUserData((session.getCurrent()).getNama(), (session.getCurrent()).getRole());
-                Navigator.show("LihatJadwal", "SIMARU - Lihat Jadwal", 800,600);
-            }
-            System.out.println((session.getCurrent()).getClass().getSimpleName());
-            System.out.println("Login berhasil!");
+        new Session(pengguna);
+        if (Session.isAdmin()) {
+            Navigator.show("DashboardAdmin", "SIMARU - Dashboard Admin", 1060, 680);
         } else {
-            System.out.println("Email atau password salah.");
+            Navigator.show("DashboardMahasiswa", "SIMARU - Dashboard", 1060, 680);
         }
     }
 
     @FXML
     void handleRegister(ActionEvent event) {
-
+        Navigator.show("Register", "SIMARU - Registrasi Mahasiswa", 520, 640);
     }
-
 }
