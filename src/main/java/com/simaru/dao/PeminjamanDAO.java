@@ -37,57 +37,82 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
         "JOIN pengguna u ON u.id_pengguna = p.id_pengguna "+
         "JOIN ruangan r ON r.id_ruangan = j.id_ruangan ";
     
-    @Override 
-    public void tambah(Peminjaman peminjaman){
+    @Override
+    public void tambah(Peminjaman peminjaman) {
+        if (peminjaman == null) {
+            Alerts.warning("Data peminjaman tidak boleh kosong.");
+            return;
+        }
         Connection conn = Database.getConnection();
-        String query = "INSERT INTO peminjaman (id_pengguna, id_ruangan, tanggal_pinjam, jam_mulai, jam_selesai, keperluan, status_verifikasi) VALUES (?,?,?,?,?,?, 'Pending')";
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return;
+        }
+        String query = "INSERT INTO peminjaman (id_pengguna, id_ruangan, tanggal_pinjam, "
+                + "jam_mulai, jam_selesai, keperluan, status_verifikasi) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection koneksi = conn;
+                PreparedStatement pstmt = koneksi.prepareStatement(query)) {
+            pstmt.setInt(1, peminjaman.getIdPengguna());
+            pstmt.setInt(2, peminjaman.getIdRuangan());
+            pstmt.setObject(3, peminjaman.getTanggal());
+            pstmt.setObject(4, peminjaman.getJamMulai());
+            pstmt.setObject(5, peminjaman.getJamSelesai());
+            pstmt.setString(6, peminjaman.getKeperluan());
+            pstmt.setString(7, peminjaman.getStatus() == null ? Status.PENDING : peminjaman.getStatus());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            Alerts.error("Error during adding user: " + e.getMessage());
+            Alerts.error("Gagal menambah peminjaman: " + e.getMessage());
+            System.err.println("Gagal menambah peminjaman: " + e.getMessage());
         }
     }
 
     @Override
     public void ubah(Peminjaman data) {
+        if (data == null || data.getIdPeminjaman() <= 0) {
+            Alerts.warning("Pilih peminjaman yang akan diubah terlebih dahulu.");
+            return;
+        }
         Connection conn = Database.getConnection();
-        String query = "UPDATE peminjaman SET id_pengguna = ?, id_ruanngan = ?, tanggal_pinjam = ?, jam_mulai = ?, jam_selesai = ?, keperluan = ?, status_verifikasi = ?, tanggal_pengajuan = ? WHERE id_peminjaman = ?";
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(query);
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return;
+        }
+        String query = "UPDATE peminjaman SET id_pengguna = ?, id_ruangan = ?, tanggal_pinjam = ?, "
+                + "jam_mulai = ?, jam_selesai = ?, keperluan = ?, status_verifikasi = ? "
+                + "WHERE id_peminjaman = ?";
+        try (Connection koneksi = conn;
+                PreparedStatement pstmt = koneksi.prepareStatement(query)) {
             pstmt.setInt(1, data.getIdPengguna());
             pstmt.setInt(2, data.getIdRuangan());
             pstmt.setObject(3, data.getTanggal());
             pstmt.setObject(4, data.getJamMulai());
             pstmt.setObject(5, data.getJamSelesai());
             pstmt.setString(6, data.getKeperluan());
-            pstmt.setString(7, data.getStatus());
-            pstmt.setString(8, data.getKeperluan());
-            pstmt.setInt(9, data.getIdPeminjaman());
-            // tolong masukin getter nya
+            pstmt.setString(7, data.getStatus() == null ? Status.PENDING : data.getStatus());
+            pstmt.setInt(8, data.getIdPeminjaman());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            Alerts.error("Error during updating user: " + e.getMessage());
-            System.err.println("Error during updating user: " + e.getMessage());
+            Alerts.error("Gagal mengubah peminjaman: " + e.getMessage());
+            System.err.println("Gagal mengubah peminjaman: " + e.getMessage());
         }
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void hapus(int id_peminjaman) {
         Connection conn = Database.getConnection();
-        try {
-            String query = "DELETE FROM peminjaman WHERE id_peminjaman = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return;
+        }
+        String query = "DELETE FROM peminjaman WHERE id_peminjaman = ?";
+        try (Connection koneksi = conn;
+                PreparedStatement pstmt = koneksi.prepareStatement(query)) {
             pstmt.setInt(1, id_peminjaman);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            Alerts.error("Error during deleting Peminjaman: " + e.getMessage());
-            System.err.println("Error during deleting Peminjaman: " + e.getMessage());
+            Alerts.error("Gagal menghapus peminjaman: " + e.getMessage());
+            System.err.println("Gagal menghapus peminjaman: " + e.getMessage());
         }
-        
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

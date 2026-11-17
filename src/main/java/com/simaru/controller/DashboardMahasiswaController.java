@@ -32,7 +32,7 @@ public class DashboardMahasiswaController implements Initializable {
             return;
         }
         lblNama.setText(pengguna.getNama());
-        lblPeran.setText(pengguna.getHakAkses());
+        lblPeran.setText(pengguna.getClass().getSimpleName());
     }
 
     @FXML
