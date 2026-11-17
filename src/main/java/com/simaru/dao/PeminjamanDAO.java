@@ -301,4 +301,51 @@ public class PeminjamanDAO implements CrudOperation<Peminjaman>{
             System.err.println("Gagal mengajukan peminjaman: " + e.getMessage());
         }
     }
+
+    /**
+     * Menyimpan pengajuan baru dan melaporkan keberhasilannya ke pemanggil.
+     * Append-only: melengkapi {@link #preTambah} tanpa mengubah kontraknya.
+     */
+    public boolean ajukan(Ruangan ruangan, LocalDate tanggal, LocalTime jamMulai,
+            LocalTime jamSelesai, String keperluan) {
+        if (Session.getCurrent() == null) {
+            Alerts.error("Sesi pengguna tidak ditemukan. Silakan login kembali.");
+            return false;
+        }
+        if (ruangan == null || tanggal == null || jamMulai == null || jamSelesai == null
+                || keperluan == null || keperluan.isBlank()) {
+            Alerts.warning("Masih ada data yang belum lengkap.");
+            return false;
+        }
+        if (!jamSelesai.isAfter(jamMulai)) {
+            Alerts.error("Jam selesai harus setelah jam mulai.");
+            return false;
+        }
+        if (!Status.TERSEDIA.equalsIgnoreCase(ruangan.getStatus())) {
+            Alerts.error("Ruangan tidak tersedia untuk diajukan.");
+            return false;
+        }
+        Connection conn = Database.getConnection();
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return false;
+        }
+        String sql = "INSERT INTO peminjaman (id_pengguna, id_ruangan, tanggal_pinjam, jam_mulai, "
+                + "jam_selesai, keperluan, status_verifikasi) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setInt(1, Session.getCurrent().getIdPengguna());
+            ps.setInt(2, ruangan.getIdRuangan());
+            ps.setObject(3, tanggal);
+            ps.setObject(4, jamMulai);
+            ps.setObject(5, jamSelesai);
+            ps.setString(6, keperluan.trim());
+            ps.setString(7, Status.PENDING);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            Alerts.error("Gagal mengajukan peminjaman: " + e.getMessage());
+            System.err.println("Gagal mengajukan peminjaman: " + e.getMessage());
+            return false;
+        }
+    }
 }

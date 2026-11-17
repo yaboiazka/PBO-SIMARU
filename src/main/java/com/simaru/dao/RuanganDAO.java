@@ -141,4 +141,33 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
         }
         return query("SELECT * FROM ruangan WHERE status= ? ORDER BY nama_ruangan", status);
     }
+
+    /**
+     * Daftar ruangan yang dapat diajukan (status Tersedia).
+     */
+    public List<Ruangan> tampilkanTersedia() {
+        List<Ruangan> hasil = new ArrayList<>();
+        Connection conn = Database.getConnection();
+        if (conn == null) {
+            Alerts.error("Tidak dapat terhubung ke database. Pastikan server MySQL berjalan.");
+            return hasil;
+        }
+        String sql = "SELECT * FROM ruangan WHERE status = ? ORDER BY nama_ruangan";
+        try (Connection koneksi = conn;
+                PreparedStatement ps = koneksi.prepareStatement(sql)) {
+            ps.setString(1, com.simaru.util.Status.TERSEDIA);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Ruangan ruangan = new Ruangan(rs.getInt("id_ruangan"), rs.getString("nama_ruangan"),
+                            rs.getInt("kapasitas"), rs.getString("fasilitas"), rs.getString("lokasi"));
+                    ruangan.setStatus(rs.getString("status"));
+                    hasil.add(ruangan);
+                }
+            }
+        } catch (SQLException e) {
+            Alerts.error("Gagal memuat ruangan tersedia: " + e.getMessage());
+            System.err.println("Gagal memuat ruangan tersedia: " + e.getMessage());
+        }
+        return hasil;
+    }
 }
