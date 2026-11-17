@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="12" stylesheets="@../css/dashboard.css, @../css/status.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.simaru.controller.KelolaRuanganController">
+    <padding>
+        <Insets bottom="16" left="16" right="16" top="16"/>
+    </padding>
+
+    <Label styleClass="judul" text="Kelola Ruangan"/>
+    <Label styleClass="sub-judul" text="Tambah, ubah, atau hapus data ruangan. Ruangan yang masih dipakai peminjaman tidak dapat dihapus."/>
+
+    <TableView fx:id="tvRuangan" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colNama" prefWidth="150" text="Nama Ruangan"/>
+            <TableColumn fx:id="colLokasi" prefWidth="200" text="Lokasi"/>
+            <TableColumn fx:id="colKapasitas" prefWidth="80" text="Kapasitas"/>
+            <TableColumn fx:id="colFasilitas" prefWidth="230" text="Fasilitas"/>
+            <TableColumn fx:id="colStatus" prefWidth="90" text="Status"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+    <GridPane hgap="10" vgap="8">
+        <Label text="Nama" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="tfNama" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label text="Lokasi" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        <TextField fx:id="tfLokasi" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+        <Label text="Kapasitas" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+        <TextField fx:id="tfKapasitas" prefWidth="80" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
+        <Label text="Fasilitas" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="tfFasilitas" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Status" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <ComboBox fx:id="cbStatus" prefWidth="150" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="8">
+        <Button onAction="#onTambah" styleClass="tombol-utama" text="Tambah"/>
+        <Button onAction="#onUbah" text="Ubah"/>
+        <Button onAction="#onHapus" styleClass="tombol-bahaya" text="Hapus"/>
+        <Button onAction="#onBersihkan" text="Bersihkan Form"/>
+    </HBox>
+</VBox>
