@@ -35,21 +35,21 @@ LEFT JOIN program_studi ps ON p.id_prodi = ps.id_prodi;
 
 -- Tambah pengguna
 INSERT INTO pengguna (nama, nim_nip, email, password, role, id_prodi)
-VALUES (?, ?, ?, SHA2(?, 256), ?, ?);
+VALUES (?, ?, ?, ?, ?, ?);
 
 -- Ubah tanpa ganti password
 UPDATE pengguna SET nama = ?, nim_nip = ?, email = ?, role = ?, id_prodi = ?
 WHERE id_pengguna = ?;
 
 -- Ubah dengan password baru
-UPDATE pengguna SET nama = ?, nim_nip = ?, email = ?, password = SHA2(?, 256),
+UPDATE pengguna SET nama = ?, nim_nip = ?, email = ?, password = ?,
                     role = ?, id_prodi = ? WHERE id_pengguna = ?;
 
 -- Hapus
 DELETE FROM pengguna WHERE id_pengguna = ?;
 ```
 
-Hash password dilakukan di aplikasi memakai `Hash.hashSHA256`, sama dengan proses login.
+Nilai `password` sudah berupa hash dari `Hash.hashSHA256` di aplikasi, sama dengan proses login.
 
 ## 5. Aturan bisnis dan penanganan error
 

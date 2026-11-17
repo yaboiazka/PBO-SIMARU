@@ -44,7 +44,7 @@ WHERE p.email = ? AND p.password = ?;
 
 -- Registrasi mandiri (role selalu MAHASISWA)
 INSERT INTO pengguna (nama, nim_nip, email, password, role, id_prodi)
-VALUES (?, ?, ?, ?, 'MAHASISWA', ?);
+VALUES (?, ?, ?, ?, ?, ?);  -- role = 'MAHASISWA', password sudah di-hash
 
 -- Pilihan program studi pada form registrasi
 SELECT id_prodi, fakultas, program_studi
