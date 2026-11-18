@@ -46,10 +46,16 @@ public class loginController {
             System.out.println("Email atau password salah.");
         }
     }
+    
 
     @FXML
     void handleRegister(ActionEvent event) {
-
+        Navigator.show(
+            "Register",
+            "SIMARU - Register",
+            480,
+            650
+        );
     }
 
 }
