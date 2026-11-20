@@ -4,6 +4,14 @@ public class Dosen extends Pengguna {
     private String nip;
     private String fakultas;
 
+    public String getNip() {
+        return nip;
+    }
+
+    public String getFakultas() {
+        return fakultas;
+    }
+
     public Dosen(int id, String nama, String email, String passwordHash, String nip, String fakultas) {
         super(id, nama, email, passwordHash);
         this.nip = nip;

@@ -1,3 +1,4 @@
+
 package com.simaru.dao;
 
 import java.sql.Connection;
@@ -11,134 +12,254 @@ import com.simaru.model.Ruangan;
 import com.simaru.util.Alerts;
 
 public class RuanganDAO implements CrudOperation<Ruangan> {
-    // Implement CRUD operations for Ruangan here
-    private List<Ruangan> query(String sql, String param) throws SQLException {
-        Connection conn = Database.getConnection();
-        List<Ruangan> hasil = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            if (param != null) {
-                ps.setString(1, param);
-            }
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    int id = rs.getInt("id_ruangan");
-                    String nama = rs.getString("nama_ruangan");
-                    int kapasitas = rs.getInt("kapasitas");
-                    String lokasi = rs.getString("lokasi");
-                    String fasilitas = rs.getString("fasilitas");
-                    String status = rs.getString("status");
-                    Ruangan ruangan = new Ruangan(id, nama, kapasitas, fasilitas, lokasi);
-                    ruangan.setStatus(status);
-                    hasil.add(ruangan);
-                }
-            }
-        }
-        return hasil;
+
+    // MAPPING DATA DATABASE KE MODEL RUANGAN
+    private Ruangan mapRuangan(ResultSet rs) throws SQLException {
+
+        Ruangan ruangan = new Ruangan(
+                rs.getInt("id_ruangan"),
+                rs.getString("nama_ruangan"),
+                rs.getInt("kapasitas"),
+                rs.getString("fasilitas"),
+                rs.getString("lokasi")
+        );
+
+        ruangan.setStatus(rs.getString("status"));
+
+        return ruangan;
     }
+
+    // CREATE
     @Override
     public void tambah(Ruangan ruangan) {
-        Connection conn = Database.getConnection();
-        try {
-            String query = "INSERT INTO ruangan (nama_ruangan, kapasitas, fasilitas) VALUES (?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, ruangan.getNamaRuangan());
-            pstmt.setInt(2, ruangan.getKapasitas());
-            pstmt.setString(3, ruangan.getFasilitas());
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            Alerts.error("Error during adding Ruangan: " + e.getMessage());
-            System.err.println("Error during adding Ruangan: " + e.getMessage());
+        tambahRuangan(ruangan);
+    }
+
+    public boolean tambahRuangan(Ruangan ruangan) {
+
+        String sql = "INSERT INTO ruangan "
+                + "(nama_ruangan, lokasi, kapasitas, fasilitas, status) "
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = Database.getConnection()) {
+
+            if (conn == null) {
+                Alerts.error("Koneksi database gagal!");
+                return false;
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, ruangan.getNamaRuangan());
+                pstmt.setString(2, ruangan.getLokasi());
+                pstmt.setInt(3, ruangan.getKapasitas());
+                pstmt.setString(4, ruangan.getFasilitas());
+                pstmt.setString(5, ruangan.getStatus());
+
+                return pstmt.executeUpdate() > 0;
+            }
+
+        } catch (SQLException e) {
+
+            Alerts.error("Gagal menambahkan ruangan: " + e.getMessage());
+            System.err.println(e.getMessage());
+
+            return false;
         }
     }
+
+    // UPDATE
+
     @Override
     public void ubah(Ruangan ruangan) {
-        Connection conn = Database.getConnection();
-        try {
-            String query = "UPDATE ruangan SET nama_ruangan = ?, kapasitas = ?, fasilitas = ?, lokasi = ? WHERE id_ruangan = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, ruangan.getNamaRuangan());
-            pstmt.setInt(2, ruangan.getKapasitas());
-            pstmt.setString(3, ruangan.getFasilitas());
-            pstmt.setString(4, ruangan.getLokasi());
-            pstmt.setInt(5, ruangan.getIdRuangan());
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            Alerts.error("Error during updating Ruangan: " + e.getMessage());
-            System.err.println("Error during updating Ruangan: " + e.getMessage());
-        }
-        // Implement the logic to update an existing Ruangan in the database
+        ubahRuangan(ruangan);
     }
+
+    public boolean ubahRuangan(Ruangan ruangan) {
+
+        String sql = "UPDATE ruangan SET "
+                + "nama_ruangan = ?, "
+                + "lokasi = ?, "
+                + "kapasitas = ?, "
+                + "fasilitas = ?, "
+                + "status = ? "
+                + "WHERE id_ruangan = ?";
+
+        try (Connection conn = Database.getConnection()) {
+
+            if (conn == null) {
+                Alerts.error("Koneksi database gagal!");
+                return false;
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, ruangan.getNamaRuangan());
+                pstmt.setString(2, ruangan.getLokasi());
+                pstmt.setInt(3, ruangan.getKapasitas());
+                pstmt.setString(4, ruangan.getFasilitas());
+                pstmt.setString(5, ruangan.getStatus());
+                pstmt.setInt(6, ruangan.getIdRuangan());
+
+                return pstmt.executeUpdate() > 0;
+            }
+
+        } catch (SQLException e) {
+
+            Alerts.error("Gagal memperbarui ruangan: " + e.getMessage());
+            System.err.println(e.getMessage());
+
+            return false;
+        }
+    }
+
+
+    // DELETE
     @Override
     public void hapus(int id_ruangan) {
-        Connection conn = Database.getConnection();
-        try {
-            String query = "DELETE FROM ruangan WHERE id_ruangan = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, id_ruangan);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            Alerts.error("Error during deleting Ruangan: " + e.getMessage());
-            System.err.println("Error during deleting Ruangan: " + e.getMessage());
-        }
-        // Implement the logic to delete a Ruangan from the database based on its ID
+        hapusRuangan(id_ruangan);
     }
+
+    public boolean hapusRuangan(int id_ruangan) {
+
+        String sql = "DELETE FROM ruangan WHERE id_ruangan = ?";
+
+        try (Connection conn = Database.getConnection()) {
+
+            if (conn == null) {
+                Alerts.error("Koneksi database gagal!");
+                return false;
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, id_ruangan);
+
+                return pstmt.executeUpdate() > 0;
+            }
+
+        } catch (SQLException e) {
+
+            if (e.getErrorCode() == 1451) {
+
+                Alerts.error(
+                        "Ruangan tidak dapat dihapus karena masih "
+                        + "digunakan dalam peminjaman atau jadwal."
+                );
+
+            } else {
+
+                Alerts.error(
+                        "Gagal menghapus ruangan: " + e.getMessage()
+                );
+            }
+
+            System.err.println(e.getMessage());
+
+            return false;
+        }
+    }
+
+
+    // READ: MENAMPILKAN SELURUH RUANGAN
     @Override
     public List<Ruangan> tampilkan() {
-        String query = "SELECT * FROM ruangan";
-        Connection conn = Database.getConnection();
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs != null) {
-                List<Ruangan> ruanganList = new ArrayList<>();
-                while (rs.next()) {
-                    int id = rs.getInt("id_ruangan");
-                    String nama = rs.getString("nama_ruangan");
-                    int kapasitas = rs.getInt("kapasitas");
-                    String lokasi = rs.getString("lokasi");
-                    String fasilitas = rs.getString("fasilitas");
-                    String status = rs.getString("status");
-                    Ruangan ruangan = new Ruangan(id, nama, kapasitas, fasilitas, lokasi);
-                    ruangan.setStatus(status);
-                    ruanganList.add(ruangan);
-                }
-                return ruanganList;
+
+        String sql = "SELECT * FROM ruangan ORDER BY id_ruangan";
+
+        List<Ruangan> hasil = new ArrayList<>();
+
+        try (Connection conn = Database.getConnection()) {
+
+            if (conn == null) {
+                Alerts.error("Koneksi database gagal!");
+                return hasil;
             }
-        } catch (Exception e) {
-            Alerts.error("Error during displaying Ruangan: " + e.getMessage());
-            System.err.println("Error during displaying Ruangan: " + e.getMessage());
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    hasil.add(mapRuangan(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+
+            Alerts.error("Gagal menampilkan ruangan: " + e.getMessage());
+            System.err.println(e.getMessage());
         }
+
+        return hasil;
+    }
+
+    // SEARCH: MENCARI RUANGAN BERDASARKAN ID
+    public Ruangan cari(int id_ruangan) {
+
+        String sql = "SELECT * FROM ruangan WHERE id_ruangan = ?";
+
+        try (Connection conn = Database.getConnection()) {
+
+            if (conn == null) {
+                Alerts.error("Koneksi database gagal!");
+                return null;
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, id_ruangan);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+
+                    if (rs.next()) {
+                        return mapRuangan(rs);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+
+            Alerts.error("Gagal mencari ruangan: " + e.getMessage());
+            System.err.println(e.getMessage());
+        }
+
         return null;
     }
 
-    public Ruangan cari(int id_ruangan) {
-        Connection conn = Database.getConnection();
-        try {
-            String query = "SELECT * FROM ruangan WHERE id_ruangan = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, id_ruangan);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs != null && rs.next()) {
-                int id = rs.getInt("id_ruangan");
-                String nama = rs.getString("nama_ruangan");
-                int kapasitas = rs.getInt("kapasitas");
-                String lokasi = rs.getString("lokasi");
-                String fasilitas = rs.getString("fasilitas");
-                String status = rs.getString("status");
-                Ruangan ruangan = new Ruangan(id, nama, kapasitas, fasilitas, lokasi);
-                ruangan.setStatus(status);
-                return ruangan;
-            }
-        } catch (Exception e) {
-            Alerts.error("Error during searching Ruangan: " + e.getMessage());
-            System.err.println("Error during displaying Ruangan: " + e.getMessage());
-        }
-        return null;
-    }
+    // FILTER: BERDASARKAN STATUS
     public List<Ruangan> filter(String status) throws SQLException {
-        if (status == null || status.isBlank() || status.equalsIgnoreCase("Semua")) {
+
+        if (status == null
+                || status.isBlank()
+                || status.equalsIgnoreCase("Semua")) {
+
             return tampilkan();
         }
-        return query("SELECT * FROM ruangan WHERE status= ? ORDER BY nama_ruangan", status);
+
+        String sql = "SELECT * FROM ruangan "
+                + "WHERE status = ? ORDER BY nama_ruangan";
+
+        List<Ruangan> hasil = new ArrayList<>();
+
+        try (Connection conn = Database.getConnection()) {
+
+            if (conn == null) {
+                throw new SQLException("Koneksi database gagal.");
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, status);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+
+                    while (rs.next()) {
+                        hasil.add(mapRuangan(rs));
+                    }
+                }
+            }
+        }
+
+        return hasil;
     }
 }

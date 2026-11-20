@@ -18,7 +18,7 @@ public class navController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Pengguna userAktif = Session.getCurrent();
-        
+
         if (userAktif != null) {
             // Mengisi Text dengan data asli dari database/session
             nameText.setText(userAktif.getNama());
@@ -50,11 +50,26 @@ public class navController implements Initializable {
     @FXML
     private Button statusPeminjamanButton;
 
-
     @FXML
     void SwitchToPeminjaman(ActionEvent event) {
+        Navigator.show(
+            "AjukanPeminjaman",
+            "SIMARU - Peminjaman",
+            1100,
+            700
+        );
     }
-    
+
+    @FXML
+    void SwitchToStatusPeminjaman(ActionEvent event) {
+        Navigator.show(
+            "StatusPeminjaman",
+            "SIMARU - Status Peminjaman",
+            1100,
+            700
+        );
+    }
+
     @FXML
     void SwitchToRuangan(ActionEvent event) {
         Navigator.show("LihatJadwal", "SIMARU - Lihat Jadwal", 800, 600);
@@ -62,11 +77,6 @@ public class navController implements Initializable {
     @FXML
     void SwitchToListRuangan(ActionEvent event) {
         Navigator.show("LihatRuangan", "SIMARU - Lihat Ruangan", 800, 600);
-    }
-
-    @FXML
-    void SwitchToStatusPeminjaman(ActionEvent event) {
-
     }
 
     @FXML

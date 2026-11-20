@@ -28,6 +28,18 @@ public class Navigator {
         try {
             Parent root = loader(name).load();
             Scene scene = new Scene(root, width, height);
+
+            // Memuat CSS SIMARU
+            java.net.URL css = Navigator.class.getResource(
+                    "/com/simaru/css/status.css"
+            );
+
+            if (css != null) {
+                scene.getStylesheets().add(css.toExternalForm());
+            } else {
+                System.err.println("File status.css tidak ditemukan!");
+            }
+
             stage.setScene(scene);
             stage.setTitle(title);
             stage.sizeToScene();
@@ -37,12 +49,14 @@ public class Navigator {
             throw new UncheckedIOException("Gagal memuat " + name + ".fxml", e);
         }
     }
-    
+
     public static void loadInto(BorderPane pane, String name) {
         try {
             pane.setCenter(loader(name).load());
         } catch (IOException e) {
-            Alerts.error("Gagal memuat halaman " + name + ": " + e.getMessage());
+            // Menampilkan detail error di terminal
+            e.printStackTrace();
+            Alerts.error( "Gagal memuat halaman " + name + ": " + e.getMessage());
         }
     }
 }

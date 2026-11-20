@@ -10,9 +10,14 @@ public class Mahasiswa extends Pengguna {
         this.jurusan = jurusan;
     }
 
+    public String getRole() {
+        return "MAHASISWA";
+    }
+
     public String getNim() {
         return nim;
     }
+
     public void setNim(String nim) {
         this.nim = nim;
     }
@@ -23,7 +28,7 @@ public class Mahasiswa extends Pengguna {
     public void setJurusan(String jurusan) {
         this.jurusan = jurusan;
     }
-    
+
     @Override
     public String getHakAkses() {
         return "LIHAT_RUANGAN, AJUKAN_PEMINJAMAN, LIHAT_STATUS, LIHAT_JADWAL";
