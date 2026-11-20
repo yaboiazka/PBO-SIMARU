@@ -5,10 +5,13 @@
     <artifactId>sistem_manajemen_ruangan</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+
+    <!-- Main Class default aplikasi -->
+    <javafx.mainClass>com.simaru.App</javafx.mainClass>
+</properties>
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -46,7 +49,7 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.simaru.App</mainClass>
+                            <mainClass>${javafx.mainClass}</mainClass>
                         </configuration>
                     </execution>
                 </executions>

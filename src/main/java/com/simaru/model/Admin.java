@@ -8,6 +8,10 @@ public class Admin extends Pengguna {
         this.level = level;
     }
 
+    public String getRole() {
+        return "ADMIN";
+    }
+
     public String getLevel() {
         return level;
     }

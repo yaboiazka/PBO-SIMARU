@@ -4,10 +4,15 @@ import com.simaru.model.Admin;
 import com.simaru.model.Pengguna;
 
 public class Session {
+
     private static Pengguna current;
 
     public Session(Pengguna pengguna) {
-        this.current = pengguna;
+        current = pengguna;
+    }
+
+    public static void setCurrent(Pengguna pengguna) {
+        current = pengguna;
     }
 
     public static Pengguna getCurrent() {

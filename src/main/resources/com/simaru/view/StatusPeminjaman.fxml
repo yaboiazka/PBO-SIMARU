@@ -10,69 +10,212 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="root"
+      spacing="0"
+      style="-fx-background-color: #f8fafc;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.simaru.controller.StatusPeminjamanController">
-    <padding>
-        <Insets bottom="16" left="16" right="16" top="16"/>
-    </padding>
 
-    <Label styleClass="judul" text="Status Peminjaman Saya"/>
-    <Label styleClass="sub-judul" text="Pantau tahap persetujuan dan batalkan pengajuan yang masih Pending."
-           wrapText="true"/>
+    <!-- NAVBAR -->
+    <fx:include source="Nav.fxml"/>
 
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label text="Status"/>
-        <ComboBox fx:id="cbFilter" prefWidth="140"/>
-        <Button onAction="#onSegarkan" text="Muat Ulang"/>
-        <Label fx:id="lblRingkasan" styleClass="ringkasan"/>
-    </HBox>
+    <!-- KONTEN UTAMA -->
+    <VBox spacing="14" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets top="22" right="24" bottom="20" left="24"/>
+        </padding>
 
-    <TableView fx:id="tvPeminjaman" prefHeight="260" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="colId" prefWidth="45" text="No."/>
-            <TableColumn fx:id="colRuangan" prefWidth="110" text="Ruangan"/>
-            <TableColumn fx:id="colLokasi" prefWidth="160" text="Lokasi"/>
-            <TableColumn fx:id="colTanggal" prefWidth="90" text="Tanggal"/>
-            <TableColumn fx:id="colJam" prefWidth="105" text="Jam"/>
-            <TableColumn fx:id="colKeperluan" prefWidth="170" text="Keperluan"/>
-            <TableColumn fx:id="colStatus" prefWidth="90" text="Status"/>
-            <TableColumn fx:id="colCatatan" prefWidth="170" text="Catatan Admin"/>
-            <TableColumn fx:id="colDiajukan" prefWidth="130" text="Diajukan Pada"/>
-        </columns>
-        <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-        </columnResizePolicy>
-    </TableView>
+        <!-- HEADER -->
+        <VBox spacing="5">
+            <Label styleClass="judul"
+                   text="Status Peminjaman Saya"/>
 
-    <Label styleClass="sub-judul" text="Detail Pengajuan"/>
-    <GridPane hgap="14" vgap="6">
-        <Label text="Ruangan" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Label fx:id="lblDRuangan" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <Label text="Lokasi" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-        <Label fx:id="lblDLokasi" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+            <Label styleClass="sub-judul"
+                   text="Pantau pengajuan, status persetujuan, dan informasi peminjaman ruangan Anda."
+                   wrapText="true"/>
+        </VBox>
 
-        <Label text="Tanggal" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Label fx:id="lblDTanggal" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Label text="Jam" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-        <Label fx:id="lblDJam" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+        <!-- FILTER DAN RINGKASAN -->
+        <HBox alignment="CENTER_LEFT" spacing="12">
 
-        <Label text="Keperluan" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Label fx:id="lblDKeperluan" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <Label text="Status" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-        <Label fx:id="lblDStatus" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+            <Label text="Filter Status"
+                   style="-fx-font-weight: bold; -fx-text-fill: #334155;"/>
 
-        <Label text="Catatan Admin" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <Label fx:id="lblDCatatan" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <Label text="Diverifikasi oleh" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-        <Label fx:id="lblDAdmin" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+            <ComboBox fx:id="cbFilter"
+                      prefWidth="150"
+                      promptText="Pilih status"/>
 
-        <Label text="Waktu Verifikasi" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <Label fx:id="lblDWaktuVerifikasi" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-    </GridPane>
+            <Button onAction="#onSegarkan"
+                    text="Muat Ulang"
+                    styleClass="tombol-utama"/>
 
-    <HBox spacing="8">
-        <Button fx:id="btnBatalkan" onAction="#onBatalkan" styleClass="tombol-bahaya"
-                text="Batalkan Pengajuan"/>
-        <Button onAction="#onSegarkan" text="Muat Ulang"/>
-    </HBox>
+            <Label fx:id="lblRingkasan"
+                   styleClass="ringkasan"
+                   wrapText="true"/>
+
+        </HBox>
+
+        <!-- TABEL PEMINJAMAN -->
+        <VBox spacing="8" VBox.vgrow="ALWAYS">
+
+            <Label text="Riwayat Pengajuan"
+                   style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+
+            <TableView fx:id="tvPeminjaman"
+                       prefHeight="300"
+                       VBox.vgrow="ALWAYS">
+
+                <columns>
+                    <TableColumn fx:id="colId"
+                                 prefWidth="45"
+                                 text="No."/>
+
+                    <TableColumn fx:id="colRuangan"
+                                 prefWidth="110"
+                                 text="Ruangan"/>
+
+                    <TableColumn fx:id="colLokasi"
+                                 prefWidth="160"
+                                 text="Lokasi"/>
+
+                    <TableColumn fx:id="colTanggal"
+                                 prefWidth="90"
+                                 text="Tanggal"/>
+
+                    <TableColumn fx:id="colJam"
+                                 prefWidth="105"
+                                 text="Jam"/>
+
+                    <TableColumn fx:id="colKeperluan"
+                                 prefWidth="170"
+                                 text="Keperluan"/>
+
+                    <TableColumn fx:id="colStatus"
+                                 prefWidth="90"
+                                 text="Status"/>
+
+                    <TableColumn fx:id="colCatatan"
+                                 prefWidth="170"
+                                 text="Catatan Admin"/>
+
+                    <TableColumn fx:id="colDiajukan"
+                                 prefWidth="130"
+                                 text="Diajukan Pada"/>
+                </columns>
+
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+
+            </TableView>
+        </VBox>
+
+        <!-- DETAIL PENGAJUAN -->
+        <VBox spacing="12"
+              style="-fx-background-color: white;
+                     -fx-background-radius: 10;
+                     -fx-border-color: #e2e8f0;
+                     -fx-border-radius: 10;
+                     -fx-padding: 15;">
+
+            <Label text="Detail Pengajuan"
+                   style="-fx-font-size: 15px;
+                          -fx-font-weight: bold;
+                          -fx-text-fill: #1e293b;"/>
+
+            <GridPane hgap="18" vgap="10">
+
+                <Label text="Ruangan"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="0"/>
+
+                <Label fx:id="lblDRuangan"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="0"/>
+
+                <Label text="Lokasi"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="0"/>
+
+                <Label fx:id="lblDLokasi"
+                       GridPane.columnIndex="3"
+                       GridPane.rowIndex="0"/>
+
+                <Label text="Tanggal"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="1"/>
+
+                <Label fx:id="lblDTanggal"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="1"/>
+
+                <Label text="Jam"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="1"/>
+
+                <Label fx:id="lblDJam"
+                       GridPane.columnIndex="3"
+                       GridPane.rowIndex="1"/>
+
+                <Label text="Keperluan"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="2"/>
+
+                <Label fx:id="lblDKeperluan"
+                       wrapText="true"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="2"/>
+
+                <Label text="Status"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="2"/>
+
+                <Label fx:id="lblDStatus"
+                       GridPane.columnIndex="3"
+                       GridPane.rowIndex="2"/>
+
+                <Label text="Catatan Admin"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="3"/>
+
+                <Label fx:id="lblDCatatan"
+                       wrapText="true"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="3"/>
+
+                <Label text="Diverifikasi oleh"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="3"/>
+
+                <Label fx:id="lblDAdmin"
+                       GridPane.columnIndex="3"
+                       GridPane.rowIndex="3"/>
+
+                <Label text="Waktu Verifikasi"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="4"/>
+
+                <Label fx:id="lblDWaktuVerifikasi"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="4"/>
+
+            </GridPane>
+        </VBox>
+
+        <!-- TOMBOL AKSI -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+
+            <Button fx:id="btnBatalkan"
+                    onAction="#onBatalkan"
+                    text="Batalkan Pengajuan"
+                    styleClass="tombol-bahaya"/>
+
+            <Button onAction="#onSegarkan"
+                    text="Muat Ulang"
+                    styleClass="tombol-utama"/>
+
+        </HBox>
+
+    </VBox>
 </VBox>

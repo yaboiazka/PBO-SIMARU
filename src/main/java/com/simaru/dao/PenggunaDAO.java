@@ -75,6 +75,43 @@ public class PenggunaDAO implements CrudOperation<Pengguna> {
         }
     }
 
+
+public static boolean register(
+        String nama,
+        String nimNip,
+        String email,
+        String password,
+        String role) {
+
+    String query = "INSERT INTO pengguna "
+            + "(nama, nim_nip, email, password, role, id_prodi) "
+            + "VALUES (?, ?, ?, ?, ?, NULL)";
+
+    try (Connection conn = Database.getConnection()) {
+
+        if (conn == null) {
+            System.err.println("Koneksi database gagal!");
+            return false;
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, nama);
+            pstmt.setString(2, nimNip);
+            pstmt.setString(3, email);
+            pstmt.setString(4, Hash.hashSHA256(password));
+            pstmt.setString(5, role);
+
+            return pstmt.executeUpdate() > 0;
+        }
+
+    } catch (Exception e) {
+        System.err.println("Error during registration: " + e.getMessage());
+        return false;
+    }
+}
+
+
     public void tambah(Pengguna pengguna) {
         Connection conn = Database.getConnection();
         String query = "INSERT INTO pengguna (nama, email, password) VALUES (?, ?, ?)";
