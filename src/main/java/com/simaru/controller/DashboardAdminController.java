@@ -1,4 +1,4 @@
-    package com.simaru.controller;
+package com.simaru.controller;
 
 import com.simaru.model.Pengguna;
 import com.simaru.util.Alerts;

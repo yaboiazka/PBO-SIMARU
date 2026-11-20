@@ -1,157 +1,360 @@
 
-/* =================================
+/* =========================================
+   SIMARU DESIGN SYSTEM
+   Modern Minimalist - Blue & White
+========================================= */
+
+/* GLOBAL */
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-background-color: #f8fafc;
+}
+
+.label {
+    -fx-text-fill: #334155;
+}
+
+/* =========================================
    JUDUL DAN TEKS
-================================= */
+========================================= */
 
 .judul {
-    -fx-font-size: 22px;
+    -fx-font-size: 23px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e293b;
+    -fx-text-fill: #172554;
 }
 
 .sub-judul {
     -fx-font-size: 12px;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
     -fx-text-fill: #64748b;
 }
 
 .ringkasan {
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #1e293b;
 }
 
-/* =================================
+.peringatan {
+    -fx-text-fill: #dc2626;
+    -fx-font-weight: bold;
+}
+
+/* =========================================
    SIDEBAR
-================================= */
+========================================= */
 
 .sidebar {
-    -fx-background-color: #f1f5f9;
-    -fx-border-color: transparent #dbe3ed transparent transparent;
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent #e2e8f0 transparent transparent;
     -fx-border-width: 0 1 0 0;
 }
 
 .sidebar-judul {
-    -fx-font-size: 25px;
+    -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-font-style: italic;
-    -fx-text-fill: #1e3a5f;
+    -fx-text-fill: #1e40af;
 }
 
-/* =================================
-   TOMBOL MENU SIDEBAR
-================================= */
+/* =========================================
+   SIDEBAR MENU
+========================================= */
 
 .menu-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #334155;
-    -fx-font-size: 12px;
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-background-radius: 7px;
-    -fx-border-radius: 7px;
+    -fx-background-radius: 9px;
+    -fx-border-radius: 9px;
     -fx-border-color: transparent;
-    -fx-padding: 9px 12px;
+    -fx-padding: 11px 14px;
     -fx-alignment: CENTER_LEFT;
     -fx-cursor: hand;
 }
 
 .menu-button:hover {
-    -fx-background-color: #dbeafe;
-    -fx-text-fill: #1d4ed8;
+    -fx-background-color: #eff6ff;
+    -fx-text-fill: #2563eb;
 }
 
 .menu-button:focused {
     -fx-background-color: #dbeafe;
     -fx-text-fill: #1d4ed8;
-    -fx-border-color: #93c5fd;
+    -fx-border-color: #bfdbfe;
 }
 
-/* =================================
-   STATUS PEMINJAMAN
-================================= */
+/* =========================================
+   BUTTON GLOBAL
+========================================= */
 
-.status-pending {
-    -fx-text-fill: #b8860b;
-    -fx-font-weight: bold;
+.button {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 9px 15px;
+    -fx-cursor: hand;
 }
 
-.status-disetujui {
-    -fx-text-fill: #1e7e34;
-    -fx-font-weight: bold;
+.button:hover {
+    -fx-cursor: hand;
 }
 
-.status-ditolak {
-    -fx-text-fill: #c62828;
-    -fx-font-weight: bold;
-}
-
-.peringatan {
-    -fx-text-fill: #c62828;
-    -fx-font-weight: bold;
-}
-
-/* =================================
-   TOMBOL AKSI
-================================= */
+/* PRIMARY BUTTON */
 
 .tombol-utama {
     -fx-background-color: #2563eb;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 6px;
-    -fx-cursor: hand;
+    -fx-background-radius: 8px;
 }
 
 .tombol-utama:hover {
     -fx-background-color: #1d4ed8;
 }
 
+/* DANGER BUTTON */
+
 .tombol-bahaya {
     -fx-background-color: #dc2626;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 6px;
-    -fx-cursor: hand;
+    -fx-background-radius: 8px;
 }
 
 .tombol-bahaya:hover {
     -fx-background-color: #b91c1c;
 }
 
+/* =========================================
+   TEXT FIELD DAN INPUT
+========================================= */
 
-/* =================================
-   LOGIN PAGE SIMARU
-================================= */
+.text-field,
+.password-field,
+.text-area {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
+    -fx-padding: 9px 11px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #1e293b;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
+.text-field:focused,
+.password-field:focused,
+.text-area:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 1.5px;
+    -fx-background-color: #ffffff;
+}
+
+/* =========================================
+   COMBO BOX
+========================================= */
+
+.combo-box-base {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
+    -fx-padding: 3px 5px;
+}
+
+.combo-box-base:focused {
+    -fx-border-color: #3b82f6;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #334155;
+    -fx-font-size: 12px;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #eff6ff;
+    -fx-text-fill: #2563eb;
+}
+
+/* =========================================
+   DATE PICKER
+========================================= */
+
+.date-picker {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
+}
+
+.date-picker:focused {
+    -fx-border-color: #3b82f6;
+}
+
+.date-picker > .arrow-button {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 0 7px 7px 0;
+}
+
+.date-picker > .arrow-button:hover {
+    -fx-background-color: #dbeafe;
+}
+
+/* =========================================
+   TABLE VIEW
+========================================= */
+
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10px;
+    -fx-padding: 0;
+    -fx-table-cell-border-color: #e9eef5;
+}
+
+/* HEADER TABLE */
+
+.table-view .column-header-background {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 10px 10px 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f1f5f9;
+    -fx-size: 40px;
+    -fx-border-color: transparent transparent #e2e8f0 transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #334155;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8px;
+}
+
+.table-view .filler {
+    -fx-background-color: #f1f5f9;
+}
+
+/* TABLE ROW */
+
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-cell-size: 36px;
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fafcff;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #eff6ff;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: #1d4ed8;
+}
+
+.table-cell {
+    -fx-text-fill: #334155;
+    -fx-font-size: 12px;
+    -fx-padding: 7px 9px;
+    -fx-border-color: transparent;
+}
+
+/* =========================================
+   STATUS PEMINJAMAN
+========================================= */
+
+.status-pending {
+    -fx-text-fill: #b45309;
+    -fx-font-weight: bold;
+}
+
+.status-disetujui {
+    -fx-text-fill: #15803d;
+    -fx-font-weight: bold;
+}
+
+.status-ditolak {
+    -fx-text-fill: #dc2626;
+    -fx-font-weight: bold;
+}
+
+/* =========================================
+   SCROLL BAR
+========================================= */
+
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 10px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 10px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+/* =========================================
+   LOGIN PAGE
+========================================= */
 
 .login-root {
-    -fx-background-color: #eef3f9;
+    -fx-background-color: #f1f5f9;
 }
 
 .login-card {
-    -fx-background-color: white;
-    -fx-background-radius: 16px;
-    -fx-border-radius: 16px;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
     -fx-border-color: #e2e8f0;
     -fx-effect: dropshadow(
         gaussian,
-        rgba(15, 23, 42, 0.12),
-        24,
-        0.15,
+        rgba(15, 23, 42, 0.10),
+        22,
+        0.12,
         0,
-        8
+        7
     );
 }
 
 .login-brand {
-    -fx-font-size: 25px;
+    -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-font-style: italic;
-    -fx-text-fill: #1e3a5f;
+    -fx-text-fill: #1e40af;
 }
 
 .login-title {
     -fx-font-size: 27px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e293b;
+    -fx-text-fill: #172554;
 }
 
 .login-subtitle {
@@ -167,24 +370,23 @@
 
 .login-field {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 7px;
+    -fx-background-radius: 8px;
     -fx-border-color: #cbd5e1;
-    -fx-border-radius: 7px;
-    -fx-padding: 10px;
+    -fx-border-radius: 8px;
+    -fx-padding: 11px;
     -fx-font-size: 13px;
 }
 
 .login-field:focused {
     -fx-border-color: #2563eb;
     -fx-border-width: 1.5px;
-    -fx-background-color: white;
 }
 
 .login-primary {
     -fx-background-color: #2563eb;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 7px;
+    -fx-background-radius: 8px;
     -fx-cursor: hand;
 }
 
@@ -196,9 +398,9 @@
     -fx-background-color: #eff6ff;
     -fx-text-fill: #2563eb;
     -fx-font-weight: bold;
-    -fx-background-radius: 7px;
+    -fx-background-radius: 8px;
     -fx-border-color: #bfdbfe;
-    -fx-border-radius: 7px;
+    -fx-border-radius: 8px;
     -fx-cursor: hand;
 }
 
@@ -211,10 +413,9 @@
     -fx-text-fill: #94a3b8;
 }
 
-
-/* =================================
+/* =========================================
    NAVIGASI MAHASISWA DAN DOSEN
-================================= */
+========================================= */
 
 .nav-bar {
     -fx-background-color: #ffffff;
@@ -223,10 +424,10 @@
 }
 
 .nav-logo {
-    -fx-font-size: 24px;
+    -fx-font-size: 25px;
     -fx-font-weight: bold;
     -fx-font-style: italic;
-    -fx-text-fill: #1e3a5f;
+    -fx-text-fill: #1e40af;
 }
 
 .nav-button {
@@ -234,8 +435,8 @@
     -fx-text-fill: #475569;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-padding: 9px 11px;
-    -fx-background-radius: 7px;
+    -fx-padding: 10px 13px;
+    -fx-background-radius: 8px;
     -fx-cursor: hand;
 }
 
@@ -244,9 +445,17 @@
     -fx-text-fill: #2563eb;
 }
 
-.nav-button:focused {
+/* Tombol halaman yang sedang aktif */
+.nav-button-active {
     -fx-background-color: #dbeafe;
     -fx-text-fill: #1d4ed8;
+    -fx-font-weight: bold;
+}
+
+/* Hover tombol yang belum aktif */
+.nav-button:hover {
+    -fx-background-color: #eff6ff;
+    -fx-text-fill: #2563eb;
 }
 
 .nav-user-name {
@@ -266,7 +475,7 @@
     -fx-font-weight: bold;
     -fx-font-size: 11px;
     -fx-padding: 9px 14px;
-    -fx-background-radius: 7px;
+    -fx-background-radius: 8px;
     -fx-cursor: hand;
 }
 

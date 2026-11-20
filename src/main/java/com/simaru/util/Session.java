@@ -1,4 +1,3 @@
-
 package com.simaru.util;
 
 import com.simaru.model.Admin;

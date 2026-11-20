@@ -1,4 +1,3 @@
-
 package com.simaru.model;
 
 import java.sql.Connection;
