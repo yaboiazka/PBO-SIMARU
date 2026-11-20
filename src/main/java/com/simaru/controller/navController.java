@@ -27,6 +27,16 @@ public class navController implements Initializable {
             nameText.setText("Guest");
             roleText.setText("-");
         }
+                // Menentukan menu yang sedang aktif
+        String halaman = Navigator.getCurrentView();
+
+        setActive(ruanganButton, "LihatJadwal".equals(halaman));
+
+        setActive(peminjamanButton, "AjukanPeminjaman".equals(halaman));
+
+        setActive(statusPeminjamanButton, "StatusPeminjaman".equals(halaman));
+
+        setActive(listRuanganButton, "LihatRuangan".equals(halaman));
     }
 
     @FXML
@@ -88,5 +98,12 @@ public class navController implements Initializable {
             System.out.println("Tidak ada pengguna yang sedang login.");
         }
     }
+        // Mengatur warna menu aktif
+    private void setActive(Button button, boolean active) {
+        button.getStyleClass().remove("nav-button-active");
 
+        if (active) {
+            button.getStyleClass().add("nav-button-active");
+        }
+    }
 }
