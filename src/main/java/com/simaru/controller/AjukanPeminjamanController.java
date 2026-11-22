@@ -3,111 +3,93 @@ package com.simaru.controller;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.simaru.dao.PeminjamanDAO;
 import com.simaru.dao.RuanganDAO;
 import com.simaru.model.Ruangan;
 import com.simaru.util.Alerts;
-import com.simaru.util.Session;
 
-import javafx.collections.FXCollections;
+import static javafx.collections.FXCollections.observableArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
 
 public class AjukanPeminjamanController implements Initializable {
 
-    private static final DateTimeFormatter FORMAT_JAM = DateTimeFormatter.ofPattern("H:mm");
-
     @FXML
     private ComboBox<Ruangan> cbRuangan;
+
     @FXML
     private DatePicker dpTanggal;
-    @FXML
-    private TextField tfJamMulai;
-    @FXML
-    private TextField tfJamSelesai;
+
     @FXML
     private TextArea taKeperluan;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        if (Session.getCurrent() == null || Session.isAdmin()) {
-            Alerts.error("Halaman ini untuk Mahasiswa dan Dosen.");
-            return;
-        }
-
-        cbRuangan.setItems(FXCollections.observableArrayList(new RuanganDAO().tampilkanTersedia()));
-        cbRuangan.setCellFactory(list -> new ListCell<>() {
-            @Override
-            protected void updateItem(Ruangan item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? null
-                        : item.getNamaRuangan() + " - " + item.getLokasi() + " (kap. " + item.getKapasitas() + ")");
-            }
-        });
-        cbRuangan.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(Ruangan item) {
-                return item == null ? "" : item.getNamaRuangan();
-            }
-
-            @Override
-            public Ruangan fromString(String string) {
-                return null;
-            }
-        });
-        dpTanggal.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(empty || item.isBefore(LocalDate.now()));
-            }
-        });
-    }
+    @FXML
+    private TextField tfJamMulai;
 
     @FXML
-    private void onAjukan(ActionEvent event) {
-        Ruangan ruangan = cbRuangan.getValue();
+    private TextField tfJamSelesai;
+
+    @FXML
+    private TextField tfMenitMulai;
+
+    @FXML
+    private TextField tfMenitSelesai;
+
+    private RuanganDAO ruang = new RuanganDAO();
+    private PeminjamanDAO pinjam = new PeminjamanDAO();
+    private List <Ruangan> ruanganzzz = new ArrayList<>();
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ruanganzzz = ruang.tampilkan();
+        cbRuangan.setItems((observableArrayList(ruanganzzz)));
+    }
+    
+    @FXML
+    void onAjukan(ActionEvent event) {
+        String jamMulaiString = tfJamMulai.getText();
+        String menitMulaiString = tfMenitMulai.getText();
+        String jamSelesaiString = tfJamSelesai.getText();
+        String menitSelesaiString = tfMenitSelesai.getText();
+
+        Ruangan terpilih  = cbRuangan.getValue();
+        String keperluan = taKeperluan.getText();
         LocalDate tanggal = dpTanggal.getValue();
-        String keperluan = taKeperluan.getText() == null ? "" : taKeperluan.getText().trim();
-
-        if (ruangan == null || tanggal == null || keperluan.isEmpty()) {
-            Alerts.warning("Ruangan, tanggal, dan keperluan wajib diisi.");
-            return;
+        LocalTime jamMulai = convert(jamMulaiString, menitMulaiString);
+        LocalTime jamSelesai = convert(jamSelesaiString, menitSelesaiString);
+        if (terpilih == null || keperluan == null || tanggal == null) {
+            Alerts.info("Masih ada data yang belum lengkap");
         }
-
-        LocalTime jamMulai;
-        LocalTime jamSelesai;
-        try {
-            jamMulai = LocalTime.parse(tfJamMulai.getText().trim(), FORMAT_JAM);
-            jamSelesai = LocalTime.parse(tfJamSelesai.getText().trim(), FORMAT_JAM);
-        } catch (DateTimeParseException | NullPointerException e) {
-            Alerts.warning("Format jam harus HH:mm, contoh 08:00.");
-            return;
-        }
-        if (!jamSelesai.isAfter(jamMulai)) {
-            Alerts.error("Jam selesai harus setelah jam mulai.");
-            return;
-        }
-
-        boolean berhasil = new PeminjamanDAO().ajukan(ruangan, tanggal, jamMulai, jamSelesai, keperluan);
-        if (berhasil) {
-            Alerts.info("Pengajuan peminjaman berhasil dikirim dan menunggu verifikasi admin.");
-            cbRuangan.setValue(null);
-            dpTanggal.setValue(null);
-            tfJamMulai.clear();
-            tfJamSelesai.clear();
-            taKeperluan.clear();
+        if (jamMulai.isBefore(jamSelesai)) {
+            pinjam.preTambah(terpilih, tanggal, jamMulai, jamSelesai, keperluan);
+        }else{
+            Alerts.error("Jam Mulai sebelum jam selesai");
         }
     }
+
+    LocalTime convert(String jam, String menit){
+        String jamMulaiString = jam + ":" + menit;
+        LocalTime lengkap;
+        if (jam == null|| menit == null) {
+            Alerts.info("Jam atau menit tidak lengkap");
+            return null;
+        }
+        try {
+            lengkap = LocalTime.parse(jamMulaiString);
+        } catch (Exception e) {
+            Alerts.error("harap masukkan angka yang valid (misal 00:00)" + e.getMessage());
+            lengkap = null;
+        }
+        return lengkap;
+    }
+
 }
