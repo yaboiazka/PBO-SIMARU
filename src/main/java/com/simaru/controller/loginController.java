@@ -37,9 +37,9 @@ public class loginController {
 
         new Session(pengguna);
         if (Session.isAdmin()) {
-            Navigator.show("DashboardAdmin", "SIMARU - Dashboard Admin", 1060, 680);
+            Navigator.show("DashboardAdmin", "SIMARU - Dashboard Admin", 1300, 680);
         } else {
-            Navigator.show("DashboardMahasiswa", "SIMARU - Dashboard", 1060, 680);
+            Navigator.show("DashboardMahasiswa", "SIMARU - Dashboard", 1300, 680);
         }
     }
 

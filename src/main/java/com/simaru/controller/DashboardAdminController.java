@@ -34,7 +34,7 @@ public class DashboardAdminController implements Initializable {
 
     @FXML
     private void onBeranda(ActionEvent event) {
-        Navigator.show("DashboardAdmin", "SIMARU - Dashboard Admin", 1060, 680);
+        Navigator.show("DashboardAdmin", "SIMARU - Dashboard Admin", 1300, 680);
     }
 
     @FXML
@@ -68,6 +68,6 @@ public class DashboardAdminController implements Initializable {
             return;
         }
         Session.clear();
-        Navigator.show("Login", "SIMARU - Login", 420, 460);
+        Navigator.show("Login", "SIMARU - Login", 900, 680);
     }
 }
