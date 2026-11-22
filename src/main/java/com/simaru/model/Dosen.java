@@ -12,11 +12,27 @@ public class Dosen extends Pengguna {
 
     @Override
     public String getHakAkses() {
-        return "LIHAT_RUANGAN, LIHAT_JADWAL";
+        return "LIHAT_RUANGAN, AJUKAN_PEMINJAMAN, LIHAT_STATUS, LIHAT_JADWAL";
     }
 
     public String getRole() {
         return "DOSEN";
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getFakultas() {
+        return fakultas;
+    }
+
+    public void setFakultas(String fakultas) {
+        this.fakultas = fakultas;
     }
 
 }

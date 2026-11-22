@@ -11,8 +11,11 @@ import com.simaru.util.Session;
 public abstract class Pengguna {
     private int id_pengguna;
     private String nama;
+    private String nim_nip;
     private String email;
     private String password;
+    private Integer idProdi;
+    private String namaProdi;
 
     public Pengguna(int id_pengguna, String nama, String email, String password) {
         this.id_pengguna = id_pengguna;
@@ -36,6 +39,13 @@ public abstract class Pengguna {
         this.nama = nama;
     }
 
+    public String getNomorIdentitas() {
+        return nim_nip;
+    }
+    public void setNomorIdentitas(String nim_nip) {
+        this.nim_nip = nim_nip;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -48,6 +58,20 @@ public abstract class Pengguna {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getIdProdi() {
+        return idProdi;
+    }
+    public void setIdProdi(Integer idProdi) {
+        this.idProdi = idProdi;
+    }
+
+    public String getNamaProdi() {
+        return namaProdi;
+    }
+    public void setNamaProdi(String namaProdi) {
+        this.namaProdi = namaProdi;
     }
 
 

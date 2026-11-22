@@ -8,7 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.simaru.controller.DashboardAdminController">
+<BorderPane fx:id="root" stylesheets="@../css/dashboard.css, @../css/status.css"
+            xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.simaru.controller.DashboardAdminController">
     <left>
         <VBox prefWidth="220" spacing="4" styleClass="sidebar">
             <padding>
@@ -21,6 +23,7 @@
             <Label fx:id="lblNama" text="Admin" />
             <Label styleClass="sub-judul" text="Admin" />
             <Region prefHeight="16" />
+            <Button maxWidth="Infinity" onAction="#onBeranda" styleClass="menu-button" text="Beranda" />
             <Button maxWidth="Infinity" onAction="#onVerifikasi" styleClass="menu-button" text="Verifikasi Peminjaman" />
             <Button maxWidth="Infinity" onAction="#onJadwal" styleClass="menu-button" text="Lihat Jadwal" />
             <Button maxWidth="Infinity" onAction="#onKelolaRuangan" styleClass="menu-button" text="Kelola Ruangan" />
@@ -30,4 +33,19 @@
             <Button maxWidth="Infinity" onAction="#onLogout" styleClass="menu-button" text="Logout" />
         </VBox>
     </left>
+    <center>
+        <VBox spacing="14" styleClass="beranda">
+            <padding>
+                <Insets bottom="24" left="24" right="24" top="24" />
+            </padding>
+            <Label styleClass="judul" text="Dashboard Admin" />
+            <Label styleClass="kartu-isi" wrapText="true"
+                   text="Selamat datang. Gunakan menu di kiri untuk memverifikasi pengajuan, melihat jadwal, mengelola ruangan dan pengguna, serta membuat laporan penggunaan ruangan." />
+            <VBox styleClass="kartu" spacing="6">
+                <Label styleClass="kartu-judul" text="Alur singkat" />
+                <Label styleClass="kartu-isi" wrapText="true"
+                       text="1. Mahasiswa/Dosen mengajukan peminjaman.&#10;2. Admin memeriksa bentrok jadwal lalu menyetujui atau menolak.&#10;3. Pengajuan yang disetujui masuk ke jadwal dan laporan." />
+            </VBox>
+        </VBox>
+    </center>
 </BorderPane>

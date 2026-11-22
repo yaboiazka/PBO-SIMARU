@@ -11,7 +11,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.simaru.controller.loginController">
    <children>
       <TextField fx:id="emailArea" layoutX="47.0" layoutY="161.0" />
-      <TextField fx:id="passwordArea" layoutX="47.0" layoutY="227.0" />
+      <PasswordField fx:id="passwordArea" layoutX="47.0" layoutY="227.0" />
       <Text layoutX="47.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
       <Text layoutX="47.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
       <Button fx:id="loginButton" layoutX="47.0" layoutY="267.0" mnemonicParsing="false" onAction="#handleLogin" text="Login" />

@@ -12,13 +12,13 @@
 <VBox spacing="12" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.simaru.controller.LihatJadwalController">
       
-    <fx:include source="nav.fxml"/>
     <padding>
         <Insets bottom="16" left="16" right="16" top="16"/>
     </padding>
 
     <Label styleClass="judul" text="Jadwal Penggunaan Ruangan"/>
     <Label styleClass="sub-judul" text="Hanya menampilkan peminjaman yang sudah disetujui."/>
+    <Label fx:id="lblJumlah" styleClass="ringkasan" text="Total jadwal: 0"/>
 
     <HBox alignment="CENTER_LEFT" spacing="10">
         <Label text="Tanggal"/>
@@ -31,7 +31,7 @@
         <columns>
             <TableColumn fx:id="colRuangan" prefWidth="110" text="Ruangan"/>
             <TableColumn fx:id="colTanggal" prefWidth="95" text="Tanggal"/>
-            <TableColumn fx:id="colJam" prefWidth="110" text="Jam"/>
+            <TableColumn fx:id="colJam" prefWidth="120" text="Jam"/>
             <TableColumn fx:id="colPengguna" prefWidth="170" text="Dipakai oleh"/>
             <TableColumn fx:id="colKeperluan" prefWidth="200" text="Keperluan"/>
         </columns>

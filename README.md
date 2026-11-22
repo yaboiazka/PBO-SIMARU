@@ -1,176 +1,244 @@
-# 🏢 SIMARU - Sistem Manajemen Ruangan
+# SIMARU - Sistem Manajemen Ruangan
 
-Aplikasi desktop berbasis **JavaFX** dan **MySQL** untuk mengelola peminjaman ruangan perkuliahan dan fasilitas kampus. Proyek ini dikembangkan menggunakan arsitektur modular Maven dengan pembagian hak akses (Role-Based Access Control) untuk Mahasiswa, Dosen, dan Admin.
+Aplikasi desktop JavaFX + MySQL untuk mengelola peminjaman ruangan kampus. Tersedia tiga peran: **Admin** (verifikasi, kelola data, laporan), **Mahasiswa**, dan **Dosen** (ajukan peminjaman, pantau status, lihat jadwal dan ketersediaan ruangan).
 
----
+README ini menggantikan panduan lama. Semua langkah di bawah mengikuti kode yang ada saat ini.
 
-## 📋 Daftar Isi
-1. [Prasyarat Sistem](#-prasyarat-sistem)
-2. [Panduan Inisiasi Proyek](#-panduan-inisiasi-proyek)
-   - [Langkah 1: Kloning Repositori](#langkah-1-kloning-repositori)
-   - [Langkah 2: Menyiapkan Database MySQL](#langkah-2-menyiapkan-database-mysql)
-   - [Langkah 3: Konfigurasi Kredensial Database](#langkah-3-konfigurasi-kredensial-database)
-   - [Langkah 4: Tes Koneksi Database](#langkah-4-tes-koneksi-database)
-   - [Langkah 5: Menjalankan Aplikasi](#langkah-5-menjalankan-aplikasi)
-3. [Akun Bawaan (Data Uji Coba)](#-akun-bawaan-data-uji-coba)
-4. [Struktur Folder](#-struktur-folder)
-5. [Troubleshooting](#-troubleshooting)
+## Daftar Isi
 
----
-
-## ⚙️ Prasyarat Sistem
-
-Sebelum memulai, pastikan perangkat Anda telah terpasang:
-- **Java Development Kit (JDK) 11** atau versi lebih baru (misal JDK 17 / 21).
-- **Apache Maven 3.6+** (terintegrasi otomatis jika memakai IntelliJ IDEA / VS Code / Eclipse).
-- **MySQL Server** (bisa menggunakan XAMPP, MySQL Community Server, atau Docker).
-- **IDE Java** yang disarankan: IntelliJ IDEA, Visual Studio Code (dengan Java Extension Pack), atau NetBeans.
+1. [Prasyarat](#1-prasyarat)
+2. [Struktur Proyek](#2-struktur-proyek)
+3. [Setup Database](#3-setup-database)
+4. [Konfigurasi Kredensial Database](#4-konfigurasi-kredensial-database)
+5. [Menjalankan Aplikasi](#5-menjalankan-aplikasi)
+6. [Akun Uji](#6-akun-uji)
+7. [Fitur dan Alur Singkat](#7-fitur-dan-alur-singkat)
+8. [Data Uji Manual](#8-data-uji-manual)
+9. [Troubleshooting](#9-troubleshooting)
+10. [Catatan Pengembangan](#10-catatan-pengembangan)
 
 ---
 
-## 🚀 Panduan Inisiasi Proyek
+## 1. Prasyarat
 
-### Langkah 1: Kloning Repositori
-Buka terminal / command prompt, lalu kloning repositori ini ke komputer Anda:
-```bash
-git clone https://github.com/<username>/sistem_manajemen_ruangan.git
-cd sistem_manajemen_ruangan
-```
+| Kebutuhan | Keterangan |
+|---|---|
+| JDK | 21 disarankan (minimal 11, sesuai `pom.xml`) |
+| Maven | 3.6 atau lebih baru |
+| MySQL / MariaDB | Server berjalan di `localhost:3306` |
+| IDE (opsional) | IntelliJ IDEA, VS Code dengan Java Extension Pack, atau NetBeans |
 
----
-
-### Langkah 2: Menyiapkan Database MySQL
-
-1. Pastikan layanan MySQL sudah aktif:
-   - **XAMPP**: Buka XAMPP Control Panel dan klik tombol **Start** pada modul **MySQL**.
-   - **MySQL Native/Service**: Pastikan service MySQL berjalan di port `3306`.
-
-2. Eksekusi file SQL yang berada di folder [`database/schema.sql`](database/schema.sql):
-
-   #### Opsi A: Menggunakan Command Line (Terminal)
-   ```bash
-   mysql -u root -p < database/schema.sql
-   ```
-   *(Tekan Enter, lalu masukkan password MySQL lokal Anda jika ada).*
-
-   #### Opsi B: Menggunakan phpMyAdmin (XAMPP)
-   1. Buka browser dan kunjungi `http://localhost/phpmyadmin`.
-   2. Klik tab **Import** pada menu navigasi atas.
-   3. Klik tombol **Choose File**, arahkan ke file `database/schema.sql`.
-   4. Klik tombol **Import** (atau **Go**) di bagian bawah.
-   5. Database `manajemen_ruangan` beserta tabel-tabelnya (`pengguna`, `ruangan`, `peminjaman`, `verifikasi`, `jadwal`) dan data awal akan otomatis dibuat.
-
-   #### Opsi C: Menggunakan DBeaver / MySQL Workbench
-   1. Buat koneksi baru ke localhost MySQL.
-   2. Buka menu **File** -> **Open File** -> pilih `database/schema.sql`.
-   3. Jalankan seluruh skrip SQL (**Execute Script** / `Ctrl + Shift + Enter`).
-
----
-
-### Langkah 3: Konfigurasi Kredensial Database
-
-Buka berkas konfigurasi / uji koneksi pada:
-📁 [`src/main/java/com/simaru/dao/TestKoneksi.java`](src/main/java/com/simaru/dao/TestKoneksi.java)
-
-Sesuaikan konstanta `USER` dan `PASS` dengan pengaturan MySQL di komputer Anda:
-```java
-public class TestKoneksi {
-    private static final String URL = "jdbc:mysql://localhost:3306/manajemen_ruangan";
-    private static final String USER = "root";       // Ganti dengan username MySQL Anda
-    private static final String PASS = "password_anda"; // Kosongkan ("") jika menggunakan default XAMPP
-    ...
-}
-```
-> [!NOTE]
-> Jika Anda menggunakan XAMPP secara default, biasanya user adalah `"root"` dan password adalah string kosong `""`.
-
----
-
-### Langkah 4: Tes Koneksi Database
-
-Sebelum menjalankan antarmuka grafis (GUI), pastikan koneksi antara Java dan MySQL berfungsi dengan baik.
-
-#### Melalui Terminal / Command Prompt:
-Jalankan perintah Maven berikut:
-```bash
-mvn compile exec:java -Dexec.mainClass="com.simaru.dao.TestKoneksi"
-```
-
-#### Melalui IDE (IntelliJ IDEA / VS Code / Eclipse):
-1. Navigasi ke file `src/main/java/com/simaru/dao/TestKoneksi.java`.
-2. Klik kanan pada file atau klik ikon panah hijau **Run** di samping `public static void main(String[] args)`.
-
-#### Output yang Diharapkan:
-Jika koneksi sukses, terminal akan menampilkan pesan:
-```text
-Mencoba koneksi ke database...
-✅ KONEKSI BERHASIL! Aplikasi sudah terhubung ke MySQL.
-```
-
-Jika muncul pesan `❌ KONEKSI GAGAL!`, silakan periksa kembali kecocokan password MySQL Anda dan pastikan service MySQL sedang aktif.
-
----
-
-### Langkah 5: Menjalankan Aplikasi
-
-Setelah koneksi database dipastikan berhasil, jalankan aplikasi JavaFX dengan perintah:
+Cek versi:
 
 ```bash
-mvn clean javafx:run
+java -version
+mvn -version
 ```
 
-Atau jalankan kelas utama [`com.simaru.App`](src/main/java/com/simaru/App.java) langsung dari IDE Anda.
+Pada Windows, pastikan `JAVA_HOME` mengarah ke folder JDK, bukan JRE.
 
 ---
 
-## 👥 Akun Bawaan (Data Uji Coba)
-
-Database `schema.sql` sudah dilengkapi dengan data awal untuk pengujian login:
-
-| Role | Nama | NIM / NIP | Email | Password |
-| :--- | :--- | :--- | :--- | :--- |
-| **ADMIN** | Administrator | `ADM001` | `admin@email.com` | `admin123` |
-| **MAHASISWA** | Ida Bagus Rama Baskarayana | `2508561002` | `rama.baskarayana@email.com` | `rama12345` |
-| **MAHASISWA** | I Putu Satria Mahatama | `2508561017` | `satria.mahatama@email.com` | `satria12345` |
-| **MAHASISWA** | Azka Nafarrel Kagata | `2508561012` | `kagatazka@email.com` | `Keisuke3S` |
-| **MAHASISWA** | Ida Bagus Gede Juana Praditya | `2508561008` | `gussjuan@email.com` | `juana12345` |
-| **DOSEN** | I Made Satria Bimantara | `198801012015041001` | `satria.bimantara@email.com` | `dosen12345` |
-
-> [!TIP]
-> Password di dalam database di-enkripsi menggunakan fungsi `SHA2(..., 256)` sesuai standar hashing yang digunakan aplikasi.
-
----
-
-## 📂 Struktur Folder
+## 2. Struktur Proyek
 
 ```text
-sistem_manajemen_ruangan/
+PBO-SIMARU/
 ├── database/
-│   └── schema.sql              # Skrip pembuatan tabel dan data awal (seeding)
-├── src/
-│   └── main/
-│       ├── java/
-│       │   ├── module-info.java
-│       │   └── com/simaru/
-│       │       ├── App.java                   # Entry point aplikasi JavaFX
-│       │       ├── controller/                # Controller GUI FXML
-│       │       └── dao/
-│       │           └── TestKoneksi.java       # Pengujian koneksi JDBC ke MySQL
-│       └── resources/
-│           └── com/simaru/                    # Berkas FXML dan styling tampilan
-├── pom.xml                                    # Konfigurasi Maven & dependensi
+│   ├── schema.sql                     # Skema + data awal (jalankan sekali)
+│   └── dev/seed_uji_bagian_saya.sql   # Data uji manual (opsional)
+├── docs/                              # Dokumentasi tiap fitur
+├── src/main/java/
+│   ├── module-info.java
+│   └── com/simaru/
+│       ├── App.java                   # Entry point JavaFX
+│       ├── controller/                # Controller FXML
+│       ├── dao/                       # Database, DAO, TestKoneksi
+│       ├── model/                     # Pengguna, Ruangan, Peminjaman, dll.
+│       └── util/                      # Session, Navigator, Alerts, Hash, Status
+├── src/main/resources/com/simaru/
+│   ├── css/                           # Stylesheet
+│   └── view/                          # File FXML
+├── pom.xml
 └── README.md
 ```
 
 ---
 
-## 🔧 Troubleshooting
+## 3. Setup Database
 
-- **Error: `CommunicationsException: Communications link failure`**  
-  👉 Pastikan layanan MySQL Anda sudah running di port `3306`.
-- **Error: `Access denied for user 'root'@'localhost'`**  
-  👉 Periksa kembali username dan password yang diisi pada [`TestKoneksi.java`](src/main/java/com/simaru/dao/TestKoneksi.java).
-- **Error: `Unknown database 'manajemen_ruangan'`**  
-  👉 Skrip [`database/schema.sql`](database/schema.sql) belum dieksekusi di server MySQL Anda. Jalankan kembali [Langkah 2](#langkah-2-menyiapkan-database-mysql).
-- **Error: JavaFX runtime components are missing**  
-  👉 Pastikan menjalankan aplikasi menggunakan perintah `mvn clean javafx:run` atau konfigurasi run configuration di IDE dengan modul JavaFX yang sesuai.
+### 3.1 Kloning repositori
+
+```bash
+git clone https://github.com/yaboiazka/PBO-SIMARU.git
+cd PBO-SIMARU
+```
+
+> Jika akan meninjau fitur terbaru, gunakan branch `feature/penyelesaian-semua-fitur`. Untuk pekerjaan bersama, gunakan branch fitur masing-masing, jangan langsung ke `main`.
+
+### 3.2 Impor skema
+
+Pastikan server MySQL aktif, lalu jalankan:
+
+```bash
+mysql -u root -p < database/schema.sql
+```
+
+Alternatif:
+
+- **phpMyAdmin (XAMPP)**: buka `http://localhost/phpmyadmin`, pilih tab **Import**, pilih `database/schema.sql`, klik **Import**.
+- **DBeaver / MySQL Workbench**: buka file `database/schema.sql`, jalankan seluruh skrip (**Execute Script**).
+
+Skrip membuat database `manajemen_ruangan` beserta tabel `program_studi`, `pengguna`, `ruangan`, `peminjaman`, `verifikasi`, dan `jadwal`, lengkap dengan data awal.
+
+> `schema.sql` memakai `CREATE TABLE` tanpa `DROP`, jadi impor ulang pada database yang sudah ada akan gagal. Untuk memulai dari nol (database lokal saja):
+>
+> ```bash
+> mysql -u root -p -e "DROP DATABASE IF EXISTS manajemen_ruangan;"
+> mysql -u root -p < database/schema.sql
+> ```
+
+---
+
+## 4. Konfigurasi Kredensial Database
+
+Aplikasi **membaca kredensial dari**:
+
+```text
+src/main/java/com/simaru/dao/Database.java
+```
+
+Sesuaikan `USER` dan `PASS` dengan MySQL di komputer Anda:
+
+```java
+private static final String URL = "jdbc:mysql://localhost:3306/manajemen_ruangan";
+private static final String USER = "root";
+private static final String PASS = "";   // sesuaikan password MySQL lokal
+```
+
+`TestKoneksi` sekarang memakai `Database.getConnection()`, jadi cukup satu tempat konfigurasi ini. Untuk XAMPP bawaan biasanya `USER = "root"` dan `PASS = ""`.
+
+> Jangan commit password MySQL pribadi. Jika mengubah `Database.java`, periksa kembali `git diff` sebelum commit.
+
+---
+
+## 5. Menjalankan Aplikasi
+
+### 5.1 Kompilasi
+
+```bash
+mvn -q clean compile
+```
+
+### 5.2 Tes koneksi (opsional)
+
+Jalankan `com.simaru.dao.TestKoneksi` dari IDE (klik kanan file, **Run**). Jika berhasil:
+
+```text
+Mencoba koneksi ke database...
+KONEKSI BERHASIL! Aplikasi sudah terhubung ke MySQL.
+```
+
+Atau lewat Maven:
+
+```bash
+mvn -q compile exec:java -Dexec.mainClass="com.simaru.dao.TestKoneksi"
+```
+
+### 5.3 Jalankan GUI
+
+```bash
+mvn clean javafx:run
+```
+
+Atau jalankan `com.simaru.App` langsung dari IDE. Halaman pertama yang muncul adalah **Login**.
+
+---
+
+## 6. Akun Uji
+
+Data awal dari `database/schema.sql`:
+
+| Peran | Nama | NIM/NIP | Email | Password |
+|---|---|---|---|---|
+| ADMIN | Administrator | `ADM001` | `admin@email.com` | `admin123` |
+| MAHASISWA | Ida Bagus Rama Baskarayana | `2508561002` | `rama.baskarayana@email.com` | `rama12345` |
+| MAHASISWA | I Putu Satria Mahatama | `2508561017` | `satria.mahatama@email.com` | `satria12345` |
+| MAHASISWA | Azka Nafarrel Kagata | `2508561012` | `kagatazka@email.com` | `Keisuke3S` |
+| MAHASISWA | Ida Bagus Gede Juana Praditya | `2508561008` | `gussjuan@email.com` | `juana12345` |
+| DOSEN | I Made Satria Bimantara | `198801012015041001` | `satria.bimantara@email.com` | `dosen12345` |
+
+Password disimpan sebagai hash SHA-256, bukan teks biasa.
+
+---
+
+## 7. Fitur dan Alur Singkat
+
+### Mahasiswa / Dosen
+
+1. Login atau registrasi mandiri (akun baru selalu berperan Mahasiswa).
+2. **Ajukan Peminjaman**: pilih ruangan `Tersedia`, tanggal, jam, dan keperluan. Status awal `Pending`.
+3. **Status Peminjaman**: lihat riwayat, filter status, baca catatan Admin, dan batalkan pengajuan yang masih `Pending`.
+4. **Jadwal Ruangan**: lihat pemakaian yang sudah disetujui, filter per tanggal.
+5. **Lihat Ruangan**: lihat daftar dan status ruangan.
+6. **Logout** dari sidebar.
+
+### Admin
+
+1. Login, lalu masuk ke **Dashboard Admin**.
+2. **Verifikasi Peminjaman**: periksa pengajuan, cek bentrok jadwal, setujui atau tolak dengan catatan.
+3. **Lihat Jadwal**: jadwal pemakaian yang disetujui.
+4. **Kelola Ruangan**: tambah, ubah, hapus ruangan.
+5. **Kelola Pengguna**: tambah, ubah, hapus akun Mahasiswa/Dosen/Admin.
+6. **Laporan Penggunaan**: filter periode/ruangan/status, lihat ringkasan dan rincian, cetak, ekspor CSV.
+
+Dokumentasi rinci ada di folder [`docs/`](docs/), misalnya:
+
+- [`docs/fitur-login-register.md`](docs/fitur-login-register.md)
+- [`docs/fitur-ajukan-peminjaman.md`](docs/fitur-ajukan-peminjaman.md)
+- [`docs/fitur-verifikasi-peminjaman.md`](docs/fitur-verifikasi-peminjaman.md)
+- [`docs/fitur-laporan-penggunaan.md`](docs/fitur-laporan-penggunaan.md)
+
+---
+
+## 8. Data Uji Manual
+
+Setelah `schema.sql`, seed tambahan dapat dijalankan sekali untuk menyiapkan skenario bentrok dan riwayat verifikasi:
+
+```bash
+mysql -u root -p manajemen_ruangan < database/dev/seed_uji_bagian_saya.sql
+```
+
+Seed ini menandai datanya dengan awalan `UJI:` dan aman dijalankan ulang karena menghapus data `UJI:` lama lebih dulu. Data ini **bukan** migrasi Flyway dan tidak dijalankan otomatis oleh aplikasi.
+
+---
+
+## 9. Troubleshooting
+
+| Gejala | Penyebab dan solusi |
+|---|---|
+| `Access denied for user 'root'@'localhost'` | `USER`/`PASS` di `Database.java` tidak cocok dengan MySQL lokal |
+| `Communications link failure` | Server MySQL belum berjalan atau port bukan `3306` |
+| `Unknown database 'manajemen_ruangan'` | `database/schema.sql` belum diimpor |
+| Tabel kosong setelah login | Impor ulang `schema.sql` pada database baru, lalu opsional jalankan seed |
+| `JavaFX runtime components are missing` | Jalankan lewat `mvn clean javafx:run`, bukan `java -jar` biasa |
+| `Table 'program_studi' doesn't exist` | Versi skema lama masih terpasang; impor `database/schema.sql` terbaru pada database baru |
+| Build gagal terkait `module-info` | Pastikan memakai JDK 11+ dan menjalankan Maven dari root proyek |
+| Perubahan tidak terlihat | Jalankan `mvn clean compile` lalu ulangi `mvn javafx:run` |
+
+Jika masih gagal, jalankan:
+
+```bash
+mvn -e clean compile
+```
+
+lalu kirim pesan error lengkap ke tim.
+
+---
+
+## 10. Catatan Pengembangan
+
+- Branch kerja: `feature/...`; jangan push langsung ke `main`.
+- Format commit: `feat: ...`, `fix: ...`, `docs: ...`, `refactor: ...`.
+- Jangan commit `target/`, `.idea/`, `*.iml`, atau kredensial database.
+- Perubahan skema database harus disetujui tim dan dibuat sebagai file migrasi baru, bukan dengan mengedit `schema.sql` yang sudah dipakai bersama.
+- Sebelum membuat Pull Request, jalankan `mvn -q clean compile` dan uji alur utama lewat GUI.

@@ -1,0 +1,51 @@
+.sidebar {
+    -fx-background-color: #1f3b2c;
+}
+
+.sidebar .label {
+    -fx-text-fill: #f5f5f5;
+}
+
+.sidebar-judul {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.sidebar .sub-judul {
+    -fx-text-fill: #b9d8c5;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e8f5e9;
+    -fx-alignment: center-left;
+    -fx-padding: 8 10 8 10;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #2e5d45;
+}
+
+.beranda {
+    -fx-padding: 24;
+}
+
+.kartu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d7de;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 16;
+}
+
+.kartu-judul {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.kartu-isi {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
+}

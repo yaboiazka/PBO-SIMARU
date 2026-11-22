@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,22 +22,16 @@ public class LihatRuanganController implements Initializable {
 
     @FXML
     private TableView<Ruangan> tvRuangan;
-
     @FXML
     private TableColumn<Ruangan, String> colNama;
-
     @FXML
     private TableColumn<Ruangan, String> colLokasi;
-
     @FXML
     private TableColumn<Ruangan, Integer> colKapasitas;
-
     @FXML
     private TableColumn<Ruangan, String> colFasilitas;
-
     @FXML
     private TableColumn<Ruangan, String> colStatus;
-
     @FXML
     private ComboBox<String> cbFilter;
 
@@ -50,25 +45,28 @@ public class LihatRuanganController implements Initializable {
 
         cbFilter.setItems(FXCollections.observableArrayList("Semua", "Tersedia", "Dipakai", "Perbaikan"));
         cbFilter.setValue("Semua");
+        tvRuangan.setPlaceholder(new Label("Tidak ada data ruangan."));
         loadData();
     }
 
     private void loadData() {
         try {
-            RuanganDAO dao = new RuanganDAO();
-            List<Ruangan> dataList = dao.filter(cbFilter.getValue());
-            System.out.println("Jumlah data dari database: " + dataList.size());
+            List<Ruangan> dataList = new RuanganDAO().filter(cbFilter.getValue());
             ObservableList<Ruangan> listData = FXCollections.observableArrayList(dataList);
             tvRuangan.setItems(listData);
-            
+            if (listData.isEmpty()) {
+                tvRuangan.setPlaceholder(new Label(
+                        "Semua".equalsIgnoreCase(cbFilter.getValue()) ? "Belum ada data ruangan."
+                                : "Tidak ada ruangan dengan status " + cbFilter.getValue() + "."));
+            }
         } catch (Exception e) {
             Alerts.error("Gagal memuat data ruangan: " + e.getMessage());
+            System.err.println("Gagal memuat data ruangan: " + e.getMessage());
         }
     }
 
     @FXML
     private void onFilter() {
-        System.out.println();
         loadData();
     }
 }
