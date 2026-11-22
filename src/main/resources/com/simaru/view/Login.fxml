@@ -1,25 +1,156 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.PasswordField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
+<StackPane
+    prefWidth="900.0"
+    prefHeight="560.0"
+    minWidth="900.0"
+    minHeight="560.0"
+    styleClass="auth-root"
+    stylesheets="@../css/auth.css"
+    xmlns="http://javafx.com/javafx/13"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.simaru.controller.loginController">
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.simaru.controller.loginController">
-   <children>
-      <TextField fx:id="emailArea" layoutX="47.0" layoutY="161.0" />
-      <PasswordField fx:id="passwordArea" layoutX="47.0" layoutY="227.0" />
-      <Text layoutX="47.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-      <Text layoutX="47.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-      <Button fx:id="loginButton" layoutX="47.0" layoutY="267.0" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
-      <Button layoutX="135.0" layoutY="267.0" mnemonicParsing="false" onAction="#handleRegister" text="Register" />
-      <Text layoutX="47.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="64.0" />
-         </font>
-      </Text>
-   </children>
-</AnchorPane>
+    <children>
+
+        <HBox
+            prefWidth="840.0"
+            prefHeight="480.0"
+            styleClass="auth-card">
+
+            <!-- PANEL KIRI -->
+            <VBox
+                prefWidth="320.0"
+                maxWidth="320.0"
+                prefHeight="480.0"
+                spacing="22.0"
+                styleClass="auth-brand-panel">
+
+                <padding>
+                    <Insets
+                        top="45"
+                        right="32"
+                        bottom="45"
+                        left="32"/>
+                </padding>
+
+                <Label
+                    text="SIMARU"
+                    styleClass="auth-brand-name"/>
+
+                <VBox spacing="12">
+
+                    <Label
+                        text="Sistem Manajemen Ruangan"
+                        wrapText="true"
+                        styleClass="auth-brand-title"/>
+
+                    <Label
+                        text="Kelola informasi dan penggunaan ruangan kampus dengan lebih mudah melalui satu sistem."
+                        wrapText="true"
+                        styleClass="auth-brand-description"/>
+
+                </VBox>
+
+                <Label
+                    text="Satu sistem untuk pengelolaan ruangan yang lebih tertata."
+                    wrapText="true"
+                    styleClass="auth-brand-note"/>
+
+            </VBox>
+
+            <!-- PANEL KANAN -->
+            <VBox
+                prefWidth="520.0"
+                maxWidth="520.0"
+                prefHeight="480.0"
+                spacing="19.0"
+                styleClass="auth-form-panel">
+
+                <padding>
+                    <Insets
+                        top="45"
+                        right="48"
+                        bottom="45"
+                        left="48"/>
+                </padding>
+
+                <VBox spacing="8">
+
+                    <Label
+                        text="Selamat Datang!"
+                        styleClass="auth-title"/>
+
+                    <Label
+                        text="Silakan masuk menggunakan akun SIMARU Anda."
+                        wrapText="true"
+                        styleClass="auth-subtitle"/>
+
+                </VBox>
+
+                <VBox spacing="7">
+
+                    <Label
+                        text="Email"
+                        styleClass="auth-field-label"/>
+
+                    <TextField
+                        fx:id="emailArea"
+                        promptText="Masukkan email"
+                        maxWidth="Infinity"
+                        styleClass="auth-input"/>
+
+                </VBox>
+
+                <VBox spacing="7">
+
+                    <Label
+                        text="Password"
+                        styleClass="auth-field-label"/>
+
+                    <PasswordField
+                        fx:id="passwordArea"
+                        promptText="Masukkan password"
+                        maxWidth="Infinity"
+                        styleClass="auth-input"/>
+
+                </VBox>
+
+                <Button
+                    fx:id="loginButton"
+                    text="Masuk"
+                    maxWidth="Infinity"
+                    onAction="#handleLogin"
+                    styleClass="auth-primary-button"/>
+
+                <HBox
+                    alignment="CENTER"
+                    spacing="5">
+
+                    <Label
+                        text="Belum punya akun?"
+                        styleClass="auth-subtitle"/>
+
+                    <Button
+                        text="Daftar sekarang"
+                        onAction="#handleRegister"
+                        styleClass="auth-link-button"/>
+
+                </HBox>
+
+            </VBox>
+
+        </HBox>
+
+    </children>
+
+</StackPane>

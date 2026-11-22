@@ -1,0 +1,156 @@
+
+/* BACKGROUND */
+.auth-root {
+    -fx-background-color: linear-gradient(
+        to bottom right,
+        #edf4ef,
+        #f7faf8
+    );
+    -fx-padding: 25px;
+}
+
+/* CARD UTAMA */
+.auth-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(31, 59, 44, 0.16),
+        22,
+        0.15,
+        0,
+        7
+    );
+}
+
+/* PANEL HIJAU */
+.auth-brand-panel {
+    -fx-background-color: #1f3b2c;
+    -fx-background-radius: 20px 0 0 20px;
+    -fx-alignment: center-left;
+}
+
+/* NAMA APLIKASI */
+.auth-brand-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #b9d8c5;
+}
+
+/* JUDUL PANEL HIJAU */
+.auth-brand-title {
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* DESKRIPSI PANEL HIJAU */
+.auth-brand-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #e8f5e9;
+}
+
+/* TEKS TAMBAHAN */
+.auth-brand-note {
+    -fx-font-size: 12px;
+    -fx-text-fill: #b9d8c5;
+}
+
+/* PANEL FORM */
+.auth-form-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 0 20px 20px 0;
+    -fx-alignment: center-left;
+}
+
+/* JUDUL FORM */
+.auth-title {
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f3b2c;
+}
+
+/* SUBJUDUL */
+.auth-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #718078;
+}
+
+/* LABEL INPUT */
+.auth-field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #334b3c;
+}
+
+/* INPUT */
+.auth-input {
+    -fx-pref-height: 42px;
+    -fx-background-color: #f8faf8;
+    -fx-background-radius: 8px;
+    -fx-border-color: #d5dfd7;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 9px 12px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #26352b;
+    -fx-prompt-text-fill: #9aa69e;
+}
+
+/* INPUT FOCUS */
+.auth-input:focused {
+    -fx-border-color: #2e5d45;
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(46, 93, 69, 0.16),
+        8,
+        0.1,
+        0,
+        0
+    );
+}
+
+/* TOMBOL UTAMA */
+.auth-primary-button {
+    -fx-background-color: #1f3b2c;
+    -fx-background-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 44px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.auth-primary-button:hover {
+    -fx-background-color: #2e5d45;
+}
+
+/* TOMBOL SEKUNDER */
+.auth-secondary-button {
+    -fx-background-color: #edf3ee;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #1f3b2c;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-pref-height: 44px;
+    -fx-padding: 10px 18px;
+    -fx-cursor: hand;
+}
+
+.auth-secondary-button:hover {
+    -fx-background-color: #dce9df;
+}
+
+/* LINK */
+.auth-link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2e5d45;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.auth-link-button:hover {
+    -fx-underline: true;
+}

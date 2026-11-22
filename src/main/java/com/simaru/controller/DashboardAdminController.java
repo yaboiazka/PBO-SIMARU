@@ -26,7 +26,7 @@ public class DashboardAdminController implements Initializable {
         Pengguna pengguna = Session.getCurrent();
         if (pengguna == null || !Session.isAdmin()) {
             Alerts.error("Halaman ini hanya untuk Admin.");
-            Navigator.show("Login", "SIMARU - Login", 420, 460);
+            Navigator.show("Login", "SIMARU - Login", 900, 560);
             return;
         }
         lblNama.setText(pengguna.getNama());

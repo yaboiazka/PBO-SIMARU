@@ -45,6 +45,6 @@ public class loginController {
 
     @FXML
     void handleRegister(ActionEvent event) {
-        Navigator.show("Register", "SIMARU - Registrasi Mahasiswa", 520, 640);
+        Navigator.show("Register", "SIMARU - Registrasi Mahasiswa", 1000, 680);
     }
 }

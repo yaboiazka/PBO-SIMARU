@@ -20,7 +20,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Navigator.init(stage);
-        Navigator.show("Login", "SIMARU - Login", 420, 460);
+        Navigator.show("Login", "SIMARU - Login", 900, 560);
     }
 
     static public void setRoot(String fxml) throws IOException {

@@ -66,7 +66,7 @@ public class RegisterController implements Initializable {
         String pesan = PenggunaDAO.registrasi(nama, nimNip, email, password, prodi.getIdProdi());
         if (pesan == null) {
             Alerts.info("Registrasi berhasil. Silakan login.");
-            Navigator.show("Login", "SIMARU - Login", 420, 460);
+            Navigator.show("Login", "SIMARU - Login", 900, 560);
         } else {
             Alerts.error(pesan);
         }
@@ -74,7 +74,7 @@ public class RegisterController implements Initializable {
 
     @FXML
     private void onBatal(ActionEvent event) {
-        Navigator.show("Login", "SIMARU - Login", 420, 460);
+        Navigator.show("Login", "SIMARU - Login", 900, 560);
     }
 
     private static String teks(TextField field) {

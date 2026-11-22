@@ -7,44 +7,206 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.simaru.controller.RegisterController">
-    <padding>
-        <Insets bottom="18" left="18" right="18" top="18"/>
-    </padding>
+<StackPane
+    prefWidth="1000.0"
+    prefHeight="680.0"
+    minWidth="1000.0"
+    minHeight="680.0"
+    styleClass="auth-root"
+    stylesheets="@../css/auth.css"
+    xmlns="http://javafx.com/javafx/13"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.simaru.controller.RegisterController">
 
-    <Label styleClass="judul" text="Registrasi Mahasiswa"/>
-    <Label styleClass="sub-judul" text="Akun baru otomatis berperan Mahasiswa." wrapText="true"/>
+    <children>
 
-    <VBox spacing="4">
-        <Label text="Nama lengkap"/>
-        <TextField fx:id="tfNama" promptText="Nama sesuai KTM"/>
-    </VBox>
-    <VBox spacing="4">
-        <Label text="NIM"/>
-        <TextField fx:id="tfNimNip" promptText="Contoh: 2508561002"/>
-    </VBox>
-    <VBox spacing="4">
-        <Label text="Email"/>
-        <TextField fx:id="tfEmail" promptText="nama@email.com"/>
-    </VBox>
-    <VBox spacing="4">
-        <Label text="Program studi"/>
-        <ComboBox fx:id="cbProdi" maxWidth="Infinity"/>
-    </VBox>
-    <VBox spacing="4">
-        <Label text="Password (minimal 6 karakter)"/>
-        <PasswordField fx:id="pfPassword"/>
-    </VBox>
-    <VBox spacing="4">
-        <Label text="Konfirmasi password"/>
-        <PasswordField fx:id="pfKonfirmasi"/>
-    </VBox>
+        <HBox
+            prefWidth="960.0"
+            prefHeight="620.0"
+            styleClass="auth-card">
 
-    <HBox spacing="8">
-        <Button onAction="#onDaftar" styleClass="tombol-utama" text="Daftar"/>
-        <Button onAction="#onBatal" text="Kembali ke Login"/>
-    </HBox>
-</VBox>
+            <!-- PANEL KIRI -->
+            <VBox
+                prefWidth="300.0"
+                maxWidth="300.0"
+                prefHeight="620.0"
+                spacing="22"
+                styleClass="auth-brand-panel">
+
+                <padding>
+                    <Insets
+                        top="45"
+                        right="28"
+                        bottom="45"
+                        left="28"/>
+                </padding>
+
+                <Label
+                    text="SIMARU"
+                    styleClass="auth-brand-name"/>
+
+                <VBox spacing="12">
+
+                    <Label
+                        text="Buat Akun Baru"
+                        wrapText="true"
+                        styleClass="auth-brand-title"/>
+
+                    <Label
+                        text="Bergabunglah dan gunakan layanan Sistem Manajemen Ruangan dengan mudah."
+                        wrapText="true"
+                        styleClass="auth-brand-description"/>
+
+                </VBox>
+
+                <Label
+                    text="Data akun Anda digunakan untuk mengakses layanan SIMARU."
+                    wrapText="true"
+                    styleClass="auth-brand-note"/>
+
+            </VBox>
+
+            <!-- PANEL KANAN -->
+            <VBox
+                prefWidth="660.0"
+                maxWidth="660.0"
+                prefHeight="620.0"
+                spacing="14"
+                styleClass="auth-form-panel">
+
+                <padding>
+                    <Insets
+                        top="30"
+                        right="34"
+                        bottom="30"
+                        left="34"/>
+                </padding>
+
+                <VBox spacing="5">
+
+                    <Label
+                        text="Registrasi Mahasiswa"
+                        styleClass="auth-title"/>
+
+                    <Label
+                        text="Akun baru otomatis berperan Mahasiswa."
+                        styleClass="auth-subtitle"/>
+
+                </VBox>
+
+                <!-- BARIS 1 -->
+                <HBox spacing="16">
+
+                    <VBox prefWidth="280" spacing="5">
+                        <Label
+                            text="Nama lengkap"
+                            styleClass="auth-field-label"/>
+
+                        <TextField
+                            fx:id="tfNama"
+                            promptText="Nama sesuai KTM"
+                            maxWidth="Infinity"
+                            styleClass="auth-input"/>
+                    </VBox>
+
+                    <VBox prefWidth="280" spacing="5">
+                        <Label
+                            text="NIM"
+                            styleClass="auth-field-label"/>
+
+                        <TextField
+                            fx:id="tfNimNip"
+                            promptText="Masukkan NIM"
+                            maxWidth="Infinity"
+                            styleClass="auth-input"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- BARIS 2 -->
+                <HBox spacing="16">
+
+                    <VBox prefWidth="280" spacing="5">
+                        <Label
+                            text="Email"
+                            styleClass="auth-field-label"/>
+
+                        <TextField
+                            fx:id="tfEmail"
+                            promptText="nama@email.com"
+                            maxWidth="Infinity"
+                            styleClass="auth-input"/>
+                    </VBox>
+
+                    <VBox prefWidth="280" spacing="5">
+                        <Label
+                            text="Program studi"
+                            styleClass="auth-field-label"/>
+
+                        <ComboBox
+                            fx:id="cbProdi"
+                            promptText="Pilih program studi"
+                            maxWidth="Infinity"
+                            styleClass="auth-input"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- BARIS 3 -->
+                <HBox spacing="16">
+
+                    <VBox prefWidth="280" spacing="5">
+                        <Label
+                            text="Password"
+                            styleClass="auth-field-label"/>
+
+                        <PasswordField
+                            fx:id="pfPassword"
+                            promptText="Minimal 6 karakter"
+                            maxWidth="Infinity"
+                            styleClass="auth-input"/>
+                    </VBox>
+
+                    <VBox prefWidth="280" spacing="5">
+                        <Label
+                            text="Konfirmasi password"
+                            styleClass="auth-field-label"/>
+
+                        <PasswordField
+                            fx:id="pfKonfirmasi"
+                            promptText="Ulangi password"
+                            maxWidth="Infinity"
+                            styleClass="auth-input"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- TOMBOL -->
+                <HBox
+                    spacing="12"
+                    alignment="CENTER_LEFT">
+
+                    <Button
+                        text="Daftar"
+                        onAction="#onDaftar"
+                        prefWidth="140"
+                        styleClass="auth-primary-button"/>
+
+                    <Button
+                        text="Kembali ke Login"
+                        onAction="#onBatal"
+                        prefWidth="180"
+                        styleClass="auth-secondary-button"/>
+
+                </HBox>
+
+            </VBox>
+
+        </HBox>
+
+    </children>
+
+</StackPane>

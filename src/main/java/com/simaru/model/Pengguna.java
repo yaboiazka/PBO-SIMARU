@@ -98,7 +98,7 @@ public abstract class Pengguna {
     public boolean logout(){
         try {
             Session.clear();
-            Navigator.show("Login", "SIMARU - Login", 420, 460);
+            Navigator.show("Login", "SIMARU - Login", 900, 560);
             return true;
         } catch (Exception e) {
             System.err.println("Error during logout: " + e.getMessage());
