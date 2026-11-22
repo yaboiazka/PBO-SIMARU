@@ -8,9 +8,9 @@ import java.util.ResourceBundle;
 import com.simaru.dao.PeminjamanDAO;
 import com.simaru.model.Peminjaman;
 import com.simaru.util.Alerts;
-import com.simaru.util.Session; // Pastikan import Session
+import com.simaru.util.Session;
 
-import static javafx.collections.FXCollections.observableArrayList;
+import static javafx.collections.FXCollections.observableArrayList; // Pastikan import Session
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,9 +70,14 @@ public class LihatJadwalController implements Initializable{
     private void loadNavbar() {
         try {
             String role = Session.getCurrent().getRole();
-            String fxmlNav = "admin".equalsIgnoreCase(role) ? "dashboardAdmin.fxml" : "nav.fxml";
             
+            if ("ADMIN".equalsIgnoreCase(role)) {
+                return;
+            }
+            
+            String fxmlNav = "nav.fxml";
             URL navUrl = getClass().getResource("/com/simaru/view/" + fxmlNav);
+            
             if (navUrl == null) {
                 System.err.println("File FXML navigasi tidak ditemukan: " + fxmlNav);
                 return;

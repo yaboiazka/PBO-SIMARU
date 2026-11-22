@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,5 +261,56 @@ public class RuanganDAO implements CrudOperation<Ruangan> {
         }
 
         return hasil;
+    }
+    public static void refresh() {
+        Connection conn = Database.getConnection();
+        
+        String sqlDipakai = "SELECT * FROM ruangan " + 
+                    "WHERE id_ruangan IN (" +
+                    "  SELECT id_ruangan FROM peminjaman " +
+                    "  WHERE tanggal_pinjam = CURDATE() " +
+                    "  AND CURTIME() BETWEEN jam_mulai AND jam_selesai " +
+                    "  AND status_verifikasi = 'Disetujui')";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlDipakai)) {
+            
+            RuanganDAO dao = new RuanganDAO();
+            while (rs.next()) {
+                Ruangan r = new Ruangan(
+                    rs.getInt("id_ruangan"),
+                    rs.getString("nama_ruangan"),
+                    rs.getInt("kapasitas"),
+                    rs.getString("fasilitas"),
+                    rs.getString("lokasi")
+                );
+                r.setStatus("Dipakai");
+                dao.ubah(r);
+            }
+        } catch (Exception e) {
+            Alerts.error("Error refresh dipakai: " + e.getMessage());
+        }
+
+        String sqlTersedia = "SELECT * FROM ruangan " + 
+                    "WHERE status = 'Dipakai' AND id_ruangan NOT IN (" +
+                    "  SELECT id_ruangan FROM peminjaman " +
+                    "  WHERE tanggal_pinjam = CURDATE() " +
+                    "  AND CURTIME() BETWEEN jam_mulai AND jam_selesai " +
+                    "  AND status_verifikasi = 'Disetujui')";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sqlTersedia)) {
+            
+            RuanganDAO dao = new RuanganDAO();
+            while (rs.next()) {
+                Ruangan r = new Ruangan(
+                    rs.getInt("id_ruangan"),
+                    rs.getString("nama_ruangan"),
+                    rs.getInt("kapasitas"),
+                    rs.getString("fasilitas"),
+                    rs.getString("lokasi")
+                );
+                r.setStatus("Tersedia");
+                dao.ubah(r);
+            }
+        } catch (Exception e) {
+            Alerts.error("Error refresh tersedia: " + e.getMessage());
+        }
     }
 }
