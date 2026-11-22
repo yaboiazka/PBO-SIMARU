@@ -13,7 +13,6 @@ import com.simaru.model.Ruangan;
 import com.simaru.util.Alerts;
 
 import static javafx.collections.FXCollections.observableArrayList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -55,17 +54,15 @@ public class AjukanPeminjamanController implements Initializable {
     }
     
     @FXML
-    void onAjukan(ActionEvent event) {
+    void onAjukan() {
         String jamMulaiString = tfJamMulai.getText();
-        String menitMulaiString = tfMenitMulai.getText();
         String jamSelesaiString = tfJamSelesai.getText();
-        String menitSelesaiString = tfMenitSelesai.getText();
 
         Ruangan terpilih  = cbRuangan.getValue();
         String keperluan = taKeperluan.getText();
         LocalDate tanggal = dpTanggal.getValue();
-        LocalTime jamMulai = convert(jamMulaiString, menitMulaiString);
-        LocalTime jamSelesai = convert(jamSelesaiString, menitSelesaiString);
+        LocalTime jamMulai = convert(jamMulaiString);
+        LocalTime jamSelesai = convert(jamSelesaiString);
         if (terpilih == null || keperluan == null || tanggal == null) {
             Alerts.info("Masih ada data yang belum lengkap");
         }
@@ -76,15 +73,14 @@ public class AjukanPeminjamanController implements Initializable {
         }
     }
 
-    LocalTime convert(String jam, String menit){
-        String jamMulaiString = jam + ":" + menit;
+    LocalTime convert(String jam){
         LocalTime lengkap;
-        if (jam == null|| menit == null) {
-            Alerts.info("Jam atau menit tidak lengkap");
+        if (jam == null) {
+            Alerts.info("Jam tidak lengkap");
             return null;
         }
         try {
-            lengkap = LocalTime.parse(jamMulaiString);
+            lengkap = LocalTime.parse(jam);
         } catch (Exception e) {
             Alerts.error("harap masukkan angka yang valid (misal 00:00)" + e.getMessage());
             lengkap = null;
