@@ -65,7 +65,7 @@ public class navController implements Initializable {
         Navigator.show(
             "AjukanPeminjaman",
             "SIMARU - Peminjaman",
-            1100,
+            1300,
             700
         );
     }
@@ -75,18 +75,18 @@ public class navController implements Initializable {
         Navigator.show(
             "StatusPeminjaman",
             "SIMARU - Status Peminjaman",
-            1100,
+            1300,
             700
         );
     }
 
     @FXML
     void SwitchToRuangan(ActionEvent event) {
-        Navigator.show("LihatJadwal", "SIMARU - Lihat Jadwal", 800, 600);
+        Navigator.show("LihatJadwal", "SIMARU - Lihat Jadwal", 1300, 700);
     }
     @FXML
     void SwitchToListRuangan(ActionEvent event) {
-        Navigator.show("LihatRuangan", "SIMARU - Lihat Ruangan", 800, 600);
+        Navigator.show("LihatRuangan", "SIMARU - Lihat Ruangan", 1300, 700);
     }
 
     @FXML

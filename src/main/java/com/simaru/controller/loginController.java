@@ -2,9 +2,9 @@ package com.simaru.controller;
 
 import com.simaru.dao.PenggunaDAO;
 import com.simaru.model.Pengguna;
+import com.simaru.util.Alerts;
 import com.simaru.util.Navigator;
 import com.simaru.util.Session;
-import com.simaru.util.Alerts;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,7 +57,7 @@ public class loginController {
                 Navigator.show(
                     "DashboardAdmin",
                     "SIMARU - Dashboard Admin",
-                    1100,
+                    1300,
                     700
                 );
 
@@ -67,7 +67,7 @@ public class loginController {
                 Navigator.show(
                     "LihatJadwal",
                     "SIMARU - Lihat Jadwal",
-                    1100,
+                    1300,
                     700
                 );
             }
