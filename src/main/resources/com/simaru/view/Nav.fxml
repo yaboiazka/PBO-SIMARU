@@ -1,76 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox alignment="CENTER_LEFT"
-      spacing="14"
-      prefHeight="70.0"
-      prefWidth="1000.0"
-      styleClass="nav-bar"
-      xmlns="http://javafx.com/javafx/26"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.simaru.controller.navController">
+<BorderPane fx:id="root"
+            prefHeight="700.0"
+            prefWidth="1300.0"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.simaru.controller.navController">
 
-    <padding>
-        <Insets top="10" right="18" bottom="10" left="18"/>
-    </padding>
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              spacing="14"
+              prefHeight="70.0"
+              styleClass="nav-bar">
 
-    <!-- LOGO -->
-    <Label text="SIMARU"
-           styleClass="nav-logo"/>
+            <padding>
+                <Insets top="10" right="18" bottom="10" left="18"/>
+            </padding>
 
-    <!-- MENU NAVIGASI -->
-    <HBox alignment="CENTER_LEFT" spacing="5">
+            <!-- LOGO -->
+            <Label text="SIMARU"
+                   styleClass="nav-logo"/>
 
-        <Button fx:id="ruanganButton"
-                text="Jadwal Ruangan"
-                onAction="#SwitchToRuangan"
-                styleClass="nav-button"/>
+            <!-- MENU NAVIGASI -->
+            <HBox alignment="CENTER_LEFT" spacing="5">
 
-        <Button fx:id="peminjamanButton"
-                text="Peminjaman"
-                onAction="#SwitchToPeminjaman"
-                styleClass="nav-button"/>
+                <Button fx:id="ruanganButton"
+                        text="Jadwal Ruangan"
+                        onAction="#SwitchToRuangan"
+                        styleClass="nav-button"/>
 
-        <Button fx:id="statusPeminjamanButton"
-                text="Status Peminjaman"
-                onAction="#SwitchToStatusPeminjaman"
-                styleClass="nav-button"/>
+                <Button fx:id="peminjamanButton"
+                        text="Peminjaman"
+                        onAction="#SwitchToPeminjaman"
+                        styleClass="nav-button"/>
 
-        <Button fx:id="listRuanganButton"
-                text="List Ruangan"
-                onAction="#SwitchToListRuangan"
-                styleClass="nav-button"/>
+                <Button fx:id="statusPeminjamanButton"
+                        text="Status Peminjaman"
+                        onAction="#SwitchToStatusPeminjaman"
+                        styleClass="nav-button"/>
 
-    </HBox>
+                <Button fx:id="listRuanganButton"
+                        text="List Ruangan"
+                        onAction="#SwitchToListRuangan"
+                        styleClass="nav-button"/>
 
-    <!-- PEMISAH OTOMATIS -->
-    <Region HBox.hgrow="ALWAYS"/>
+            </HBox>
 
-    <!-- INFORMASI PENGGUNA -->
-    <VBox alignment="CENTER_RIGHT" spacing="3">
+            <!-- PEMISAH OTOMATIS -->
+            <Region HBox.hgrow="ALWAYS"/>
 
-        <Text fx:id="nameText"
-              text="Nama user"
-              styleClass="nav-user-name"/>
+            <!-- INFORMASI PENGGUNA -->
+            <VBox alignment="CENTER_RIGHT" spacing="3">
 
-        <Text fx:id="roleText"
-              text="Mahasiswa"
-              styleClass="nav-user-role"/>
+                <Text fx:id="nameText"
+                      text="Nama user"
+                      styleClass="nav-user-name"/>
 
-    </VBox>
+                <Text fx:id="roleText"
+                      text="Mahasiswa"
+                      styleClass="nav-user-role"/>
 
-    <!-- LOGOUT -->
-    <Button fx:id="logOutButton"
-            text="Logout"
-            onAction="#doLogOut"
-            styleClass="nav-logout"/>
+            </VBox>
 
-</HBox>
+            <!-- LOGOUT -->
+            <Button fx:id="logOutButton"
+                    text="Logout"
+                    onAction="#doLogOut"
+                    styleClass="nav-logout"/>
+
+        </HBox>
+    </top>
+
+</BorderPane>

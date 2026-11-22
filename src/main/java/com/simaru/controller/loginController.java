@@ -65,8 +65,8 @@ public class loginController {
 
                 // Membuka halaman pengguna
                 Navigator.show(
-                    "LihatJadwal",
-                    "SIMARU - Lihat Jadwal",
+                    "Nav",
+                    "SIMARU",
                     1300,
                     700
                 );

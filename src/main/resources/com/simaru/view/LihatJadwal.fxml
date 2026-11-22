@@ -9,10 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="rootContainer" spacing="12" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+<VBox spacing="12" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.simaru.controller.LihatJadwalController">
-      
-    <!-- <fx:include source="nav.fxml"/> -->
     <padding>
         <Insets bottom="16" left="16" right="16" top="16"/>
     </padding>

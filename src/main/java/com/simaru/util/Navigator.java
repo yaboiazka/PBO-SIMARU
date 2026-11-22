@@ -73,7 +73,7 @@ public class Navigator {
 
     public static void loadInto(BorderPane pane, String name) {
         try {
-
+            currentView = name;
             pane.setCenter(loader(name).load());
 
         } catch (IOException e) {

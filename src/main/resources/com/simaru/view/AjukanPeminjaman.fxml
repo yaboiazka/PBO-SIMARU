@@ -14,9 +14,6 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.simaru.controller.AjukanPeminjamanController">
 
-    <!-- NAVIGASI ATAS -->
-    <fx:include source="Nav.fxml"/>
-
     <padding>
         <Insets bottom="16" left="16" right="16" top="16"/>
     </padding>

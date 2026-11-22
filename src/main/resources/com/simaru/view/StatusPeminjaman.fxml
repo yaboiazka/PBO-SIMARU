@@ -11,26 +11,17 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="root"
-      spacing="12"
+      spacing="14"
       style="-fx-background-color: #f8fafc;"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.simaru.controller.StatusPeminjamanController">
-    
+
     <padding>
-        <Insets bottom="16" left="16" right="16" top="16"/>
+        <Insets top="22" right="24" bottom="20" left="24"/>
     </padding>
-    
-    <!-- NAVBAR -->
-    <fx:include source="Nav.fxml"/>
 
-    <!-- KONTEN UTAMA -->
-    <VBox spacing="14" VBox.vgrow="ALWAYS">
-        <padding>
-            <Insets top="22" right="24" bottom="20" left="24"/>
-        </padding>
-
-        <!-- HEADER -->
+    <!-- HEADER -->
         <VBox spacing="5">
             <Label styleClass="judul"
                    text="Status Peminjaman Saya"/>
@@ -216,5 +207,4 @@
 
         </HBox>
 
-    </VBox>
 </VBox>

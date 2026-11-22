@@ -11,33 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 public class navController implements Initializable {
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Pengguna userAktif = Session.getCurrent();
-
-        if (userAktif != null) {
-            // Mengisi Text dengan data asli dari database/session
-            nameText.setText(userAktif.getNama());
-            roleText.setText(userAktif.getClass().getSimpleName());
-        } else {
-            nameText.setText("Guest");
-            roleText.setText("-");
-        }
-                // Menentukan menu yang sedang aktif
-        String halaman = Navigator.getCurrentView();
-
-        setActive(ruanganButton, "LihatJadwal".equals(halaman));
-
-        setActive(peminjamanButton, "AjukanPeminjaman".equals(halaman));
-
-        setActive(statusPeminjamanButton, "StatusPeminjaman".equals(halaman));
-
-        setActive(listRuanganButton, "LihatRuangan".equals(halaman));
-    }
+    @FXML
+    private BorderPane root;
 
     @FXML
     private Button listRuanganButton;
@@ -60,33 +40,62 @@ public class navController implements Initializable {
     @FXML
     private Button statusPeminjamanButton;
 
-    @FXML
-    void SwitchToPeminjaman(ActionEvent event) {
-        Navigator.show(
-            "AjukanPeminjaman",
-            "SIMARU - Peminjaman",
-            1300,
-            700
-        );
-    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Pengguna userAktif = Session.getCurrent();
 
-    @FXML
-    void SwitchToStatusPeminjaman(ActionEvent event) {
-        Navigator.show(
-            "StatusPeminjaman",
-            "SIMARU - Status Peminjaman",
-            1300,
-            700
-        );
+        if (userAktif != null) {
+            // Mengisi Text dengan data asli dari database/session
+            nameText.setText(userAktif.getNama());
+            roleText.setText(userAktif.getClass().getSimpleName());
+        } else {
+            nameText.setText("Guest");
+            roleText.setText("-");
+        }
+
+        // Tampilkan halaman default awal (Lihat Jadwal)
+        SwitchToRuangan(null);
     }
 
     @FXML
     void SwitchToRuangan(ActionEvent event) {
-        Navigator.show("LihatJadwal", "SIMARU - Lihat Jadwal", 1300, 700);
+        Navigator.loadInto(root, "LihatJadwal");
+        setMenuAktif(ruanganButton);
     }
+
+    @FXML
+    void SwitchToPeminjaman(ActionEvent event) {
+        Navigator.loadInto(root, "AjukanPeminjaman");
+        setMenuAktif(peminjamanButton);
+    }
+
+    @FXML
+    void SwitchToStatusPeminjaman(ActionEvent event) {
+        Navigator.loadInto(root, "StatusPeminjaman");
+        setMenuAktif(statusPeminjamanButton);
+    }
+
     @FXML
     void SwitchToListRuangan(ActionEvent event) {
-        Navigator.show("LihatRuangan", "SIMARU - Lihat Ruangan", 1300, 700);
+        Navigator.loadInto(root, "LihatRuangan");
+        setMenuAktif(listRuanganButton);
+    }
+
+    private void setMenuAktif(Button buttonAktif) {
+        setActive(ruanganButton, ruanganButton == buttonAktif);
+        setActive(peminjamanButton, peminjamanButton == buttonAktif);
+        setActive(statusPeminjamanButton, statusPeminjamanButton == buttonAktif);
+        setActive(listRuanganButton, listRuanganButton == buttonAktif);
+    }
+
+    // Mengatur warna menu aktif
+    private void setActive(Button button, boolean active) {
+        if (button == null) return;
+        button.getStyleClass().remove("nav-button-active");
+
+        if (active) {
+            button.getStyleClass().add("nav-button-active");
+        }
     }
 
     @FXML
@@ -96,14 +105,6 @@ public class navController implements Initializable {
             currentUser.logout();
         } else {
             System.out.println("Tidak ada pengguna yang sedang login.");
-        }
-    }
-        // Mengatur warna menu aktif
-    private void setActive(Button button, boolean active) {
-        button.getStyleClass().remove("nav-button-active");
-
-        if (active) {
-            button.getStyleClass().add("nav-button-active");
         }
     }
 }

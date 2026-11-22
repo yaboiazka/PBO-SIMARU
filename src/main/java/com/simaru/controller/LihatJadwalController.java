@@ -53,9 +53,6 @@ public class LihatJadwalController implements Initializable{
 
     @Override 
     public void initialize(URL location, ResourceBundle resources) {
-        // Panggil fungsi untuk memuat navbar
-        loadNavbar();
-
         // Inisialisasi kolom tabel
         colRuangan.setCellValueFactory(new PropertyValueFactory<>("namaRuangan"));
         colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
@@ -64,36 +61,6 @@ public class LihatJadwalController implements Initializable{
         colKeperluan.setCellValueFactory(new PropertyValueFactory<>("keperluan"));
         
         loadData(null);
-    }
-
-    // Fungsi baru untuk memuat navigasi dinamis
-    private void loadNavbar() {
-        try {
-            String role = Session.getCurrent().getRole();
-            
-            if ("ADMIN".equalsIgnoreCase(role)) {
-                return;
-            }
-            
-            String fxmlNav = "nav.fxml";
-            URL navUrl = getClass().getResource("/com/simaru/view/" + fxmlNav);
-            
-            if (navUrl == null) {
-                System.err.println("File FXML navigasi tidak ditemukan: " + fxmlNav);
-                return;
-            }
-            
-            Node navbar = FXMLLoader.load(navUrl);
-            
-            if (rootContainer != null) {
-                rootContainer.getChildren().add(0, navbar);
-            } else {
-                System.err.println("rootContainer null. Pastikan VBox paling luar di FXML punya fx:id=\"rootContainer\"");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alerts.error("Gagal memuat navigasi: " + e.getMessage());
-        }
     }
 
     private void loadData(LocalDate tanggal) {
