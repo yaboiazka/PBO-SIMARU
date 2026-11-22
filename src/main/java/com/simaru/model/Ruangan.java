@@ -15,6 +15,11 @@ public class Ruangan {
         this.lokasi = lokasi;
         this.fasilitas = fasilitas;
     }
+    
+    @Override
+    public String toString() {
+        return this.nama_ruangan + " (" + lokasi + ")";
+    }
 
     public int getIdRuangan() {
         return id_ruangan;
