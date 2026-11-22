@@ -116,12 +116,7 @@
         </VBox>
 
         <!-- DETAIL PENGAJUAN -->
-        <VBox spacing="12"
-              style="-fx-background-color: white;
-                     -fx-background-radius: 10;
-                     -fx-border-color: #e2e8f0;
-                     -fx-border-radius: 10;
-                     -fx-padding: 15;">
+        <VBox spacing="12" styleClass="card">
 
             <Label text="Detail Pengajuan"
                    style="-fx-font-size: 15px;

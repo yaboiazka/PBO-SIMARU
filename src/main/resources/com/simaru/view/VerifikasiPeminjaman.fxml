@@ -44,9 +44,10 @@
                         </columnResizePolicy>
                     </TableView>
 
-                    <VBox prefWidth="380" spacing="8">
-                        <Label styleClass="sub-judul" text="Detail Pengajuan"/>
-                        <GridPane hgap="10" vgap="6">
+                    <VBox prefWidth="380" spacing="10" styleClass="card">
+                        <Label text="Detail Pengajuan"
+                               style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                        <GridPane hgap="12" vgap="8">
                             <Label text="Pemohon" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             <Label fx:id="lblDPemohon" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                             <Label text="NIM/NIP" GridPane.columnIndex="0" GridPane.rowIndex="1"/>

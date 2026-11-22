@@ -89,4 +89,17 @@ public class Navigator {
     public static String getCurrentView() {
         return currentView;
     }
+
+    public static void applyDialogStyle(javafx.scene.control.Dialog<?> dialog) {
+        if (dialog == null || dialog.getDialogPane() == null) return;
+        applyDialogPaneStyle(dialog.getDialogPane());
+    }
+
+    public static void applyDialogPaneStyle(javafx.scene.control.DialogPane dialogPane) {
+        if (dialogPane == null) return;
+        java.net.URL css = Navigator.class.getResource("/com/simaru/css/status.css");
+        if (css != null && !dialogPane.getStylesheets().contains(css.toExternalForm())) {
+            dialogPane.getStylesheets().add(css.toExternalForm());
+        }
+    }
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.simaru.dao.KelolaPenggunaDAO;
 import com.simaru.model.Pengguna;
 import com.simaru.util.Alerts;
+import com.simaru.util.Navigator;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -220,6 +221,7 @@ public class KelolaPenggunaController {
         boolean modeEdit = penggunaEdit != null;
 
         Dialog<ButtonType> dialog = new Dialog<>();
+        Navigator.applyDialogStyle(dialog);
 
         dialog.setTitle(
                 modeEdit ? "Edit Pengguna" : "Tambah Pengguna"

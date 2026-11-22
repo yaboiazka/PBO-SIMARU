@@ -24,6 +24,7 @@ public final class Alerts {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, pesan, ButtonType.YES, ButtonType.NO);
         alert.setHeaderText(null);
         alert.setTitle("Konfirmasi");
+        Navigator.applyDialogStyle(alert);
         return alert.showAndWait().filter(b -> b == ButtonType.YES).isPresent();
     }
 
@@ -31,6 +32,7 @@ public final class Alerts {
         Alert alert = new Alert(tipe, pesan, ButtonType.OK);
         alert.setHeaderText(null);
         alert.setTitle(judul);
+        Navigator.applyDialogStyle(alert);
         alert.showAndWait();
     }
 }

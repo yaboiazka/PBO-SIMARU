@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import com.simaru.dao.RuanganDAO;
 import com.simaru.model.Ruangan;
 import com.simaru.util.Alerts;
+import com.simaru.util.Navigator;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -202,6 +203,7 @@ public class KelolaRuanganController implements Initializable {
     private void onTambah() {
 
         Dialog<Ruangan> dialog = new Dialog<>();
+        Navigator.applyDialogStyle(dialog);
 
         dialog.setTitle("Tambah Ruangan");
         dialog.setHeaderText("Form Tambah Ruangan Baru");
@@ -389,6 +391,7 @@ public class KelolaRuanganController implements Initializable {
         }
 
         Dialog<Ruangan> dialog = new Dialog<>();
+        Navigator.applyDialogStyle(dialog);
 
         dialog.setTitle("Edit Ruangan");
         dialog.setHeaderText("Perbarui Informasi Ruangan");
@@ -557,6 +560,7 @@ public class KelolaRuanganController implements Initializable {
         Alert konfirmasi = new Alert(
                 Alert.AlertType.CONFIRMATION
         );
+        Navigator.applyDialogStyle(konfirmasi);
         konfirmasi.setTitle("Konfirmasi Hapus Ruangan");
         konfirmasi.setHeaderText(
                 "Hapus ruangan: " + terpilih.getNamaRuangan() + "?"
